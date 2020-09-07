@@ -1,47 +1,41 @@
-import Users from '../../models/Users'
+import Users from '@models/Users'
 
 interface CreateUser {
-    email: string,
-    name: string,
-    password: string,
+  email: string;
+  name: string;
+  password: string;
 }
 
 interface QueryUser {
-    id: string
+  id: string;
 }
 
-class usersControllers {
-    async query (_, args: QueryUser){
-        try {
+class UsersControllers {
+  async query (_: any, args: QueryUser) {
+    try {
+      const user = await Users.findById(args.id)
 
-            const user = await Users.findById(args.id)  
-
-            return user
-            
-        } catch (error) {
-            console.log(error)
-        }
+      return user
+    } catch (error) {
+      console.log(error)
     }
+  }
 
-    async create (_: any, args: CreateUser){
-        try {
+  async create (_: any, args: CreateUser) {
+    try {
+      const doc = new Users({
+        email: args.email,
+        name: args.name,
+        password: args.password
+      })
 
-            const doc = new Users({
-                email: args.user.email,
-                name: args.user.name,
-                password: args.user.password
-            })
+      await doc.save()
 
-            await doc.save()
-
-            return doc
-
-        } catch (error) {
-            console.log(error)
-        }
-
-     
+      return doc
+    } catch (error) {
+      console.log(error)
     }
+  }
 }
 
-export default new usersControllers()
+export default new UsersControllers()

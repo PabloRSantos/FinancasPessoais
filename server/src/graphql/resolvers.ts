@@ -1,24 +1,18 @@
 
-import Users from '../models/Users'
-import Transacoes from '../models/Transacoes'
-
-import usersController from './controllers/usersControllers'
-
-
-
-
+import usersController from '@controllers/usersControllers'
+import transacoesController from '@controllers/transacoesController'
 
 export default {
-    Query: {
-        user: usersController.query,
-        transacoes: () => {},
-        transacao: () => {},
-    },
+  Query: {
+    user: usersController.query,
+    transacoes: () => transacoesController.index,
+    transacao: () => transacoesController.show
+  },
 
-    Mutation: {
-        createUser: usersController.create,
-        createTransacao:(_: any) => {},
-        updateTransacao: () => {},
-        deleteTransacao: () => {},
-    }
+  Mutation: {
+    createUser: usersController.create,
+    createTransacao: (_: any) => transacoesController.create,
+    updateTransacao: () => transacoesController.update,
+    deleteTransacao: () => transacoesController.delete
+  }
 }
