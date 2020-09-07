@@ -1,5 +1,4 @@
 import {ApolloServer} from 'apollo-server'
-// import express from 'express'
 
 import mongoose from 'mongoose'
 import resolvers from './graphql/resolvers'
@@ -18,12 +17,8 @@ const server = new ApolloServer({
     typeDefs: schemas,
     resolvers,
 })
+console.log("fsdgs");
+console.log("fsdgs");
+console.log("fsdgs")
 
 server.listen().then(({ url }) => console.log(`🚀 Server ready at ${url}`))
-
-
-// const app = express()
-
-// server.applyMiddleware({app})
-
-// app.listen({port: 3333}, () => console.log(`Servidor rodando na porta 3333/${server.graphqlPath}`))

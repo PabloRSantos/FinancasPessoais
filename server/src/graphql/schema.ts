@@ -2,7 +2,7 @@ import { gql } from 'apollo-server'
 
 const typeRefs = gql`
     type User {
-        _id: ID
+        _id: String
         name: String,
         email: String,
         password: String,
@@ -10,7 +10,7 @@ const typeRefs = gql`
     }
 
     type Transacao {
-        _id: ID!
+        _id: String!
         user_id: Float
         valor: Float
     }
@@ -22,7 +22,7 @@ const typeRefs = gql`
     }
 
     type Query {
-        user(id: ID!): User,
+        user(id: String!): User,
         transacoes(user_id: Float): [Transacao],
         transacao(user_id: Float):Transacao
     }
