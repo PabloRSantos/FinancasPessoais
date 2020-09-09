@@ -11,9 +11,9 @@ type User {
 }
 
 type Transacao {
-    _id: String!
-    userId: Float
-    valor: Float
+    _id: String,
+    userId: Float,
+    valor: Float,
 }
 
 input createUserInput {
@@ -22,15 +22,24 @@ input createUserInput {
     password: String!,
 }
 
+type Categoria {
+  _id: String,
+  userId: [String!],
+  name: String,
+  global: Boolean,
+}
+
 type Query {
     user(id: String!): User,
-    transacoes(userId: String): [Transacao],
-    transacao(TransicaoId: String):Transacao
+    categorias(userId: String!): [Categoria],
+    transacoes(userId: String!): [Transacao],
+    transacao(TransicaoId: String!):Transacao
 }
 
 type Mutation {
-    createUser(user: createUserInput): User,
-    createTransacao(userId: String!):Transacao,
+    createUser(user: createUserInput!): User,
+    createCategorias(userId: String!, name: String!): Categoria,
+    createTransacao(userId: String!, valor: Float): Transacao,
     updateTransacao(TransicaoId: String!, newValor: Float): Transacao,
     deleteTransacao(TransicaoId: String!):Transacao,
 }

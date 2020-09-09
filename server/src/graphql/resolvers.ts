@@ -1,18 +1,21 @@
 
 import usersController from '@controllers/usersControllers'
 import transacoesController from '@controllers/transacoesController'
+import categoriasController from '@controllers/categoriasController'
 
 export default {
   Query: {
     user: usersController.query,
-    transacoes: () => transacoesController.index,
-    transacao: () => transacoesController.show
+    categorias: categoriasController.index,
+    transacoes: transacoesController.index,
+    transacao: transacoesController.show
   },
 
   Mutation: {
     createUser: usersController.create,
-    createTransacao: (_: any) => transacoesController.create,
-    updateTransacao: () => transacoesController.update,
-    deleteTransacao: () => transacoesController.delete
+    createTransacao: transacoesController.create,
+    createCategorias: categoriasController.create,
+    updateTransacao: transacoesController.update,
+    deleteTransacao: transacoesController.delete
   }
 }
