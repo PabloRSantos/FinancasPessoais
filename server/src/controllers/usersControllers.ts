@@ -1,9 +1,11 @@
 import Users from '@models/Users'
 
 interface CreateUser {
-  email: string;
-  name: string;
-  password: string;
+  user: {
+    email: string;
+    name: string;
+    password: string;
+  }
 }
 
 interface QueryUser {
@@ -14,7 +16,6 @@ class UsersControllers {
   async query (_: any, args: QueryUser) {
     try {
       const user = await Users.findById(args.id)
-
       return user
     } catch (error) {
       console.log(error)
@@ -24,9 +25,9 @@ class UsersControllers {
   async create (_: any, args: CreateUser) {
     try {
       const doc = new Users({
-        email: args.email,
-        name: args.name,
-        password: args.password
+        email: args.user.email,
+        name: args.user.name,
+        password: args.user.password
       })
 
       await doc.save()

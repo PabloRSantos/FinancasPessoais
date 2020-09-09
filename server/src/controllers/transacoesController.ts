@@ -35,14 +35,19 @@ class TransacoesController {
   }
 
   async create (_: any, args: CreateTransacao) {
-    const docs = new Transacoes({
-      userId: args.userId,
-      valor: args.valor
-    })
+    try {
+      const docs = new Transacoes({
+        userId: args.userId,
+        valor: args.valor
+      })
 
-    await docs.save()
+      await docs.save()
 
-    return docs
+      return docs
+    } catch (error) {
+      console.log(error)
+      return error
+    }
   }
 
   async update (_: any, args: UpdateTransacao) {
