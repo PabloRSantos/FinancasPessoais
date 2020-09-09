@@ -1,5 +1,12 @@
-import mongoose from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 const Schema = mongoose.Schema
+
+interface ITransacao extends Document {
+  _id: String,
+  userId: [String],
+  name: String,
+  global: Boolean,
+}
 
 const transacoesSchema = new Schema({
   userId: {
@@ -14,6 +21,6 @@ const transacoesSchema = new Schema({
 
 })
 
-const Transacoes = mongoose.model('transacoes', transacoesSchema)
+const Transacoes = mongoose.model<ITransacao>('transacoes', transacoesSchema)
 
 export default Transacoes

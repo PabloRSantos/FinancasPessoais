@@ -1,6 +1,12 @@
-import mongoose from 'mongoose'
-
+import mongoose, { Document } from 'mongoose'
 const Schema = mongoose.Schema
+
+interface IUser extends Document {
+  _id: String,
+  userId: [String],
+  name: String,
+  global: Boolean,
+}
 
 const userSchema = new Schema({
   name: {
@@ -21,6 +27,6 @@ const userSchema = new Schema({
   }
 })
 
-const Users = mongoose.model('users', userSchema)
+const Users = mongoose.model<IUser>('users', userSchema)
 
 export default Users
