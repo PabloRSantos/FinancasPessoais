@@ -2,6 +2,7 @@
 import usersController from '@controllers/usersControllers'
 import transacoesController from '@controllers/transacoesController'
 import categoriasController from '@controllers/categoriasController'
+import sessionController from '@controllers/sessionController'
 
 export default {
   Query: {
@@ -12,7 +13,8 @@ export default {
   },
 
   Mutation: {
-    createUser: usersController.create,
+    Cadastro: sessionController.cadastro,
+    Login: sessionController.login,
     createTransacao: transacoesController.create,
     createCategorias: categoriasController.create,
     updateTransacao: transacoesController.update,

@@ -16,11 +16,16 @@ const categoriasSchema = new Schema({
   },
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   global: {
     type: Boolean,
     default: false
+  },
+  icon: {
+    type: String,
+    default: 'defaultIcon.png'
   }
 
 })

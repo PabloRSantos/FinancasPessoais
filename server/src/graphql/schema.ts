@@ -30,18 +30,19 @@ type Categoria {
 }
 
 type Query {
-    user(id: String!): User,
-    categorias(userId: String!): [Categoria],
-    transacoes(userId: String!): [Transacao],
-    transacao(TransicaoId: String!):Transacao
+    user(): User,
+    categorias(): [Categoria],
+    transacoes(): [Transacao],
+    transacao(TransacaoId: String!): Transacao
 }
 
 type Mutation {
-    createUser(user: createUserInput!): User,
-    createCategorias(userId: String!, name: String!): Categoria,
-    createTransacao(userId: String!, valor: Float): Transacao,
-    updateTransacao(TransicaoId: String!, newValor: Float): Transacao,
-    deleteTransacao(TransicaoId: String!):Transacao,
+    Cadastro(user: createUserInput!): Token: String,
+    Login(email: String, password: String): Token: String,
+    createCategorias(name: String!): Categoria,
+    createTransacao(valor: Float): Transacao,
+    updateTransacao(TransacaoId: String!, newValor: Float): Transacao,
+    deleteTransacao(TransacaoId: String!):Transacao,
 }
 `
 

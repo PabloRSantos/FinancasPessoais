@@ -1,16 +1,12 @@
 import Transacoes from '@models/Transacoes'
+import { MyContext } from 'src/server'
 
 interface CreateTransacao {
-    userId: String,
     valor: number
 }
 
 interface GetTransacao {
     TransicaoId: String
-}
-
-interface GetTransacoes {
-    userId: String,
 }
 
 interface UpdateTransacao {
@@ -29,15 +25,18 @@ class TransacoesController {
     return transacao
   }
 
-  async index (_: any, args: GetTransacoes) {
-    const transacoes = await Transacoes.find({ userId: args.userId })
+  async index (_: any, args: any, context: MyContext) {
+    const userId = context.auth()
+    const transacoes = await Transacoes.find({ userId: userId })
     return transacoes
   }
 
-  async create (_: any, args: CreateTransacao) {
+  async create (_: any, args: CreateTransacao, context: MyContext) {
     try {
+      const userId = context.auth()
+
       const docs = new Transacoes({
-        userId: args.userId,
+        userId: userId,
         valor: args.valor
       })
 
@@ -60,6 +59,8 @@ class TransacoesController {
 
   async delete (_: any, args: DeleteTransacao) {
     const TransicaoDelete = await Transacoes.findByIdAndDelete({ _id: args.TransicaoId })
+
+    console.log(TransicaoDelete)
 
     return TransicaoDelete
   }

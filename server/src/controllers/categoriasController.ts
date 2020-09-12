@@ -1,18 +1,16 @@
 import Categorias from '@models/Categorias'
-
-interface IargsIndex {
-  userId: String
-}
+import { MyContext } from 'src/server'
 
 interface IargsCreate {
-  userId: String
   name: String
 }
 
 class CategoriasController {
-  async index (_: any, args: IargsIndex) {
+  async index (_: any, args: any, context: MyContext) {
     try {
-      const data = await Categorias.find({ userId: args.userId })
+      const userId = context.auth()
+
+      const data = await Categorias.find({ userId: userId })
 
       return data
     } catch (error) {
@@ -21,21 +19,23 @@ class CategoriasController {
     }
   }
 
-  async create (_: any, args: IargsCreate) {
+  async create (_: any, args: IargsCreate, context: MyContext) {
     try {
+      const userId = context.auth()
+
       const data = await Categorias.findOne({ name: args.name })
 
       if (data) {
-        if (data.userId.indexOf(args.userId)) return data
+        if (data.userId.indexOf(userId)) return data
 
-        data.userId.push(args.userId)
+        data.userId.push(userId)
         const categoriaUpdated = await Categorias.findByIdAndUpdate({ _id: data._id }, data)
 
         return categoriaUpdated
       }
 
       const docs = new Categorias({
-        userId: args.userId,
+        userId: userId,
         name: args.name
       })
 

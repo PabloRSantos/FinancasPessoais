@@ -3,9 +3,8 @@ const Schema = mongoose.Schema
 
 interface ITransacao extends Document {
   _id: String,
-  userId: [String],
-  name: String,
-  global: Boolean,
+  userId: String,
+  valor: Number
 }
 
 const transacoesSchema = new Schema({
@@ -16,6 +15,11 @@ const transacoesSchema = new Schema({
   },
   valor: {
     type: Number,
+    required: true
+  },
+  categoria: {
+    type: Schema.Types.ObjectId,
+    ref: 'categorias',
     required: true
   }
 

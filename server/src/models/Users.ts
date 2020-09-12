@@ -3,9 +3,10 @@ const Schema = mongoose.Schema
 
 interface IUser extends Document {
   _id: String,
-  userId: [String],
   name: String,
-  global: Boolean,
+  email: String,
+  saldo: Number,
+  password: String,
 }
 
 const userSchema = new Schema({
@@ -15,7 +16,8 @@ const userSchema = new Schema({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: String,
