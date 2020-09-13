@@ -6,7 +6,7 @@ import ThemeContext from './src/contexts/themes'
 const App = () => {
   return (
     <ThemeContext>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar barStyle="light-content" backgroundColor='#0098F6'/>
       <Routes />
     </ThemeContext>
   )

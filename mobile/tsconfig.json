@@ -13,7 +13,7 @@
       "target": "es2017",
      "module": "commonjs",
      "typeRoots": [
-        "./customTypes",
+        "./src/customTypes",
         "./node_modules/@types"
     ],
   "skipLibCheck": true,
@@ -24,7 +24,8 @@
       "babel.config.js",
       "metro.config.js",
       "jest.config.js"
-    ]
+    ],
+    "include": ["src/**/*", "src/*", "src/customTypes/customType.d.ts"]
   }
 
   
