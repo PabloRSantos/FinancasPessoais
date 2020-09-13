@@ -1,4 +1,4 @@
-export default {
+const green = {
   title: 'green',
 
   colors: {
@@ -7,6 +7,10 @@ export default {
     white: '#FFFFFF',
     textInWhite: '#504E4E',
     disabled: '#C6C4C4',
-    cinza: '#EDEDED'
+    cinza: '#EDEDED',
+    blue: '#0098F6'
+
   }
 }
+
+export default green

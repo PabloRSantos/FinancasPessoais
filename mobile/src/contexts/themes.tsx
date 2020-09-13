@@ -3,6 +3,7 @@ import blue from '../styles/themes/blue'
 import green from '../styles/themes/green'
 import red from '../styles/themes/red'
 import { ThemeProvider } from 'styled-components'
+import { IThemes } from '../styles/themes/IThemes'
 
 interface IContext {
     switchTheme: (newTheme: String) => void
@@ -13,7 +14,7 @@ const ThemeContext = createContext<IContext>({
 })
 
 const ThemeContextProvider: React.FC = ({ children }) => {
-  const [temaAtual, setTemaAtual] = useState(blue)
+  const [temaAtual, setTemaAtual] = useState<IThemes>(blue)
 
   function switchTheme (newTheme: String) {
     switch (newTheme) {

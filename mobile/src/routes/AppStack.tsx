@@ -5,7 +5,7 @@ import HomeTabs from './HomeTabs'
 
 const { Navigator, Screen } = createStackNavigator()
 
-function AuthStack () {
+function AppStack () {
   return (
     <NavigationContainer>
       <Navigator screenOptions={{ headerShown: false }}>
@@ -15,4 +15,4 @@ function AuthStack () {
   )
 }
 
-export default AuthStack
+export default AppStack
