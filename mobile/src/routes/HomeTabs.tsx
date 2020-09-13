@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Profile from '../pages/Profile'
 import Home from '../pages/Home'
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const { Navigator, Screen } = createBottomTabNavigator()
 
@@ -25,13 +25,12 @@ function StudyTabs () {
         },
         tabStyle: {
           flexDirection: 'column',
-          alignItems: 'center',
           justifyContent: 'center'
         },
         iconStyle: {
           flex: 0,
-          width: 20,
-          height: 20
+          minWidth: 20,
+          minHeight: 20
         },
         labelStyle: {
           fontFamily: 'Archivo-Bold',
@@ -48,10 +47,10 @@ function StudyTabs () {
         component={Home}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color, size, focused }: tabBarIconProps) =>
-            <Icon
+          tabBarIcon: ({ color, focused }: tabBarIconProps) =>
+            <FontAwesome
               name="home"
-              size={size}
+              size={30}
               color={focused ? '#0098F6' : color} />
         }}
       />
@@ -60,11 +59,11 @@ function StudyTabs () {
         component={Home}
         options={{
           tabBarLabel: '',
-          tabBarIcon: ({ color, size, focused }: tabBarIconProps) =>
-            <Icon
+          tabBarIcon: ({ color, focused }: tabBarIconProps) =>
+            <FontAwesome
               style={{ marginTop: 10 }}
-              name="close"
-              size={size}
+              name="plus-circle"
+              size={50}
               color={focused ? '#0098F6' : color} />
         }}
       />
@@ -73,10 +72,10 @@ function StudyTabs () {
         component={Profile}
         options={{
           tabBarLabel: 'Perfil',
-          tabBarIcon: ({ color, size, focused }: tabBarIconProps) =>
-            <Icon
+          tabBarIcon: ({ color, focused }: tabBarIconProps) =>
+            <FontAwesome
               name="user"
-              size={size}
+              size={20}
               color={focused ? '#0098F6' : color}/>
         }}
       />
