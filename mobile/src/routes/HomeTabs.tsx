@@ -1,7 +1,9 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-import Profile from '../pages/Profile'
+import Calculadora from '../pages/Calculadora'
+import Add from '../pages/Add'
+// import Profile from '../pages/Profile'
 import Home from '../pages/Home'
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
@@ -55,8 +57,8 @@ function StudyTabs () {
         }}
       />
       <Screen
-        name="More"
-        component={Home}
+        name="Add"
+        component={Add}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({ color, focused }: tabBarIconProps) =>
@@ -69,7 +71,7 @@ function StudyTabs () {
       />
       <Screen
         name="Profile"
-        component={Profile}
+        component={Calculadora}
         options={{
           tabBarLabel: 'Perfil',
           tabBarIcon: ({ color, focused }: tabBarIconProps) =>
