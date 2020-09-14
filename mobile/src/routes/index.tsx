@@ -1,14 +1,14 @@
 import React from 'react'
 
-// import AuthStack from './AuthStack'
+import AuthStack from './AuthStack'
 import AppStack from './AppStack'
 
-// import { useAuth } from '../contexts/auth'
+import { useAuth } from '../contexts/auth'
 
 const Routes = () => {
-//   const { signed } = useAuth()
+  const { signed } = useAuth()
 
-  return <AppStack />
+  return signed ? <AppStack /> : <AuthStack />
 }
 
 export default Routes
