@@ -11,7 +11,7 @@ interface GetTransacao {
 
 interface UpdateTransacao {
     TransicaoId: String
-    valor: number
+    newValor: number
 }
 
 interface DeleteTransacao {
@@ -51,7 +51,7 @@ class TransacoesController {
 
   async update (_: any, args: UpdateTransacao) {
     const TransicaoUpdate = await Transacoes.findByIdAndUpdate({ _id: args.TransicaoId }, {
-      valor: args.valor
+      valor: args.newValor
     })
 
     return TransicaoUpdate

@@ -13,21 +13,25 @@ export interface MyContext {
   auth: () => string
 }
 
-const mongoUrl = process.env.MONGO_URL as string
+try {
+  const mongoUrl = process.env.MONGO_URL as string
 
-mongoose.Promise = global.Promise
-mongoose
-  .connect(mongoUrl, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+  mongoose.Promise = global.Promise
+  mongoose
+    .connect(mongoUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
+
+  const server = new ApolloServer({
+    typeDefs: schemas,
+    resolvers,
+    context: ({ req }) => ({
+      auth: authUser(req.headers.authorization as String)
+    })
   })
 
-const server = new ApolloServer({
-  typeDefs: schemas,
-  resolvers,
-  context: ({ req }) => ({
-    auth: authUser(req.headers.authorization as String)
-  })
-})
-
-server.listen().then(({ url }) => console.log(`🚀 Server ready at ${url}`))
+  server.listen().then(({ url }) => console.log(`🚀 Server ready at ${url}`))
+} catch (error) {
+  console.log(error)
+}
