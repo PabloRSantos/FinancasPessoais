@@ -1,8 +1,10 @@
 import React from 'react'
 import { FlatList } from 'react-native'
+
 import HeaderComponent from '../../components/Header'
 import TransacoesComponent from '../../components/Transacoes'
 import GraficosComponent from '../../components/Grafico'
+import ContasComponent from '../../components/Contas'
 
 import { Container, ContainerFlatItems } from './styles'
 
@@ -29,6 +31,16 @@ const Home: React.FC = () => {
       render: () => (
         <ContainerFlatItems>
           <GraficosComponent />
+        </ContainerFlatItems>
+      )
+    },
+    {
+      key: 'Contas',
+      render: () => (
+        <ContainerFlatItems>
+          <ContasComponent />
+          <ContasComponent />
+          <ContasComponent />
         </ContainerFlatItems>
       )
     }

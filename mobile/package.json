@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@apollo/client": "^3.1.5",
     "@expo-google-fonts/archivo": "^0.1.0",
     "@expo-google-fonts/poppins": "^0.1.0",
     "@expo/vector-icons": "^10.2.1",
@@ -19,6 +20,8 @@
     "@react-navigation/stack": "^5.9.0",
     "expo": "^38.0.10",
     "expo-font": "^8.2.2",
+    "graphql": "^15.3.0",
+    "number-to-locale-string-polyfill": "^1.0.9",
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-gesture-handler": "^1.8.0",

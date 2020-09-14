@@ -1,33 +1,44 @@
 import React, { useState } from 'react'
 import CalcButtonComponent from '../../components/CalcButton'
+import 'number-to-locale-string-polyfill'
 
 import { Container, Header, Value, ButtonBlock, Buttons } from './styles'
 
 const Calculadora: React.FC = () => {
-  const [valueState, setValueState] = useState('0,00')
+  const [valueState, setValueState] = useState('R$0,00')
 
   const addValue = (valueParam: number) => {
-    const result = valueState + valueParam.toString()
+    const valueStateFormatted = Number(valueState.toString()
+      .replace('R$', '')
+      .replace(',', '')
+      .replace('.', ''))
 
-    setValueState(result)
+    let result = 0
+
+    if (valueState === 'R$0,00') {
+      result = valueParam
+    } else {
+      result = Number(valueStateFormatted + valueParam.toString())
+    }
+
+    const formattedResult = result.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+    setValueState(formattedResult)
   }
 
   const eraseValue = () => {
     const result = valueState.substring(1)
 
+    // const formattedResult = Number(result).toLocaleString('pt-BR')
+
     setValueState(result)
   }
-
-  // const handleValue = (value: string, lenght: number) => {
-
-  //   setValueState(value)
-  // }
 
   return (
     <Container>
       <Header>
         <Value>
-          R${valueState}
+          {valueState}
         </Value>
       </Header>
 
