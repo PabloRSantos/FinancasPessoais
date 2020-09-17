@@ -8,9 +8,9 @@ interface IargsCreate {
 class CategoriasController {
   async index (_: any, args: any, context: MyContext) {
     try {
-      const userId = context.auth()
+      const userId = context.auth
 
-      const data = await Categorias.find({ userId: userId })
+      const data = await Categorias.find({ $or: [{ userId: userId }, { global: true }] })
 
       return data
     } catch (error) {
@@ -21,7 +21,7 @@ class CategoriasController {
 
   async create (_: any, args: IargsCreate, context: MyContext) {
     try {
-      const userId = context.auth()
+      const userId = context.auth
 
       const data = await Categorias.findOne({ name: args.name })
 

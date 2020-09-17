@@ -13,11 +13,11 @@ export default function authUser (authHeader: String) {
 
   if (!/^Bearer$/i.test(scheme)) { return { message: 'Erro no token' } }
 
-  jwt.verify(token, auth, (err, decoded) => {
+  return jwt.verify(token, auth, (err, decoded) => {
     if (err) return { message: 'Token inválido' }
 
     const userId = decoded?.toString()
 
-    return { userId }
+    return userId
   })
 }

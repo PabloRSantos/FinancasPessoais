@@ -34,7 +34,7 @@ class SessionController {
 
       const token = generateToken(doc._id.toString())
 
-      return token
+      return { token }
     } catch (error) {
       console.log(error)
     }
@@ -49,7 +49,7 @@ class SessionController {
 
     const token = generateToken(user._id.toString())
 
-    return token
+    return { token }
   }
 }
 

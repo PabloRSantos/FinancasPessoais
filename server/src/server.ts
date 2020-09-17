@@ -10,7 +10,7 @@ import authUser from './util/auth'
 dotenv.config()
 
 export interface MyContext {
-  auth: () => string
+  auth: () => String
 }
 
 try {

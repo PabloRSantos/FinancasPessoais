@@ -13,8 +13,8 @@ export default {
   },
 
   Mutation: {
-    Cadastro: sessionController.cadastro,
-    Login: sessionController.login,
+    cadastro: sessionController.cadastro,
+    login: sessionController.login,
     createTransacao: transacoesController.create,
     createCategorias: categoriasController.create,
     updateTransacao: transacoesController.update,

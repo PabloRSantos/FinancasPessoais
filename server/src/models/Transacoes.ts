@@ -4,7 +4,11 @@ const Schema = mongoose.Schema
 interface ITransacao extends Document {
   _id: String,
   userId: String,
-  valor: Number
+  valor: String,
+  title: String,
+  categoriaId: String,
+  isCompleted: Boolean
+  isNegative: Boolean
 }
 
 const transacoesSchema = new Schema({
@@ -13,13 +17,25 @@ const transacoesSchema = new Schema({
     ref: 'users',
     required: true
   },
-  valor: {
-    type: Number,
+  title: {
+    type: String,
     required: true
   },
-  categoria: {
+  valor: {
+    type: String,
+    required: true
+  },
+  categoriaId: {
     type: Schema.Types.ObjectId,
     ref: 'categorias',
+    required: true
+  },
+  isCompleted: {
+    type: Boolean,
+    required: true
+  },
+  isNegative: {
+    type: Boolean,
     required: true
   }
 
