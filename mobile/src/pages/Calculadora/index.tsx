@@ -2,18 +2,27 @@ import React, { useState } from 'react'
 import CalcButtonComponent from '../../components/CalcButton'
 import 'number-to-locale-string-polyfill'
 
+import { useTransacao } from '../../contexts/transacoes'
+
 import { Container, Header, Value, ButtonBlock, Buttons } from './styles'
 
 const Calculadora: React.FC = () => {
   const [valueState, setValueState] = useState('R$0,00')
+  const { changeState, createTransacao } = useTransacao()
 
-  const addValue = (valueParam: number) => {
-    const valueStateFormatted = Number(valueState.toString()
+  const formattedNumber = (value: string) => {
+    return Number(value
       .replace('R$', '')
       .replace(',', '')
       .replace('.', ''))
+  }
+
+  const addValue = (valueParam: number) => {
+    const valueStateFormatted = formattedNumber(valueState)
 
     let result = 0
+
+    if (isNaN(valueStateFormatted)) return
 
     if (valueState === 'R$0,00') {
       result = valueParam
@@ -29,9 +38,12 @@ const Calculadora: React.FC = () => {
   const eraseValue = () => {
     const result = valueState.substring(1)
 
-    // const formattedResult = Number(result).toLocaleString('pt-BR')
-
     setValueState(result)
+  }
+
+  const submitValue = async () => {
+    changeState({ valor: valueState })
+    createTransacao()
   }
 
   return (
@@ -64,7 +76,7 @@ const Calculadora: React.FC = () => {
         <ButtonBlock>
           <CalcButtonComponent onPress={ eraseValue } title='<'/>
           <CalcButtonComponent onPress={() => addValue(0)} title='0'/>
-          <CalcButtonComponent title='v'/>
+          <CalcButtonComponent onPress={submitValue} title='v'/>
         </ButtonBlock>
 
       </Buttons>

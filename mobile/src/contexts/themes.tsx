@@ -2,14 +2,16 @@ import React, { createContext, useContext, useState } from 'react'
 import blue from '../styles/themes/blue'
 import green from '../styles/themes/green'
 import red from '../styles/themes/red'
-import { ThemeProvider } from 'styled-components'
+import { DefaultTheme, ThemeProvider } from 'styled-components'
 
 interface IContext {
     switchTheme: (newTheme: String) => void
+    theme: DefaultTheme
 }
 
 const ThemeContext = createContext<IContext>({
-  switchTheme: () => {}
+  switchTheme: () => {},
+  theme: blue
 })
 
 const ThemeContextProvider: React.FC = ({ children }) => {
@@ -29,7 +31,7 @@ const ThemeContextProvider: React.FC = ({ children }) => {
   }
 
   return (
-    <ThemeContext.Provider value={{ switchTheme }}>
+    <ThemeContext.Provider value={{ switchTheme, theme: temaAtual }}>
       <ThemeProvider theme={temaAtual}>
         {children}
       </ThemeProvider>

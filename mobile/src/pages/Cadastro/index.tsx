@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ButtonComponent from '../../components/Button'
 import InputComponent from '../../components/Input'
 
-import { useAuth } from '../../contexts/auth'
+import { useAuth } from '../../contexts/auth/auth'
 
 import { Container, TextTop, Title, Span, Form } from './styles'
 
@@ -14,7 +14,7 @@ const Cadastro: React.FC = () => {
 
   const { SignUp } = useAuth()
 
-  const submitForm = async () => {
+  const submitForm = () => {
     const data = {
       name,
       email,

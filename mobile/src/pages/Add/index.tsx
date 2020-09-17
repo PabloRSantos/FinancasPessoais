@@ -1,32 +1,70 @@
-import React, { useState } from 'react'
-import ListItemComponent from '../../components/ListItem'
+import React, { useCallback } from 'react'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
+
+import ListItemComponent, { Data } from '../../components/ListItem'
+
+import { useTheme } from '../../contexts/themes'
+import { useTransacao } from '../../contexts/transacoes'
 
 import { Container, ContentTitle, Title, Lista } from './styles'
 
-export interface Data {
-  icon: string,
-  name: string
-}
-
 const Add: React.FC = () => {
-  const [data, setData] = useState<Data[]>([{
-    icon: 'a',
-    name: 'Lazer'
-  }, {
-    icon: 'a',
-    name: 'Lazer'
-  }, {
-    icon: 'a',
-    name: 'Lazer'
-  }, {
-    icon: 'a',
-    name: 'Laze'
-  }])
+  const { switchTheme } = useTheme()
+  const { changeState } = useTransacao()
+  const navigation = useNavigation()
 
-  const renderListItem = (item: Data) => (<ListItemComponent
-    name={item.name}
-    icon={item.icon}
-  />
+  useFocusEffect(
+    useCallback(() => {
+      switchTheme('blue')
+    }, [])
+  )
+
+  const handleCategoria = (colorTheme: String, isCompleted: boolean, isNegative: boolean) => {
+    switchTheme(colorTheme)
+    changeState({ isCompleted, isNegative })
+    navigation.navigate('Categorias')
+  }
+
+  const data: Data[] = [{
+    icon: 'a',
+    name: 'Depósito',
+    colorTheme: 'green',
+    isCompleted: true,
+    isNegative: false
+  }, {
+    icon: 'a',
+    name: 'Prejuizo',
+    colorTheme: 'red',
+    isCompleted: true,
+    isNegative: true
+
+  }, {
+    icon: 'a',
+    name: 'Nova conta',
+    colorTheme: 'red',
+    isCompleted: false,
+    isNegative: true
+
+  },
+  {
+    icon: 'a',
+    name: 'Futuro depósito',
+    colorTheme: 'green',
+    isCompleted: false,
+    isNegative: false
+  }
+  ]
+
+  const renderListItem = (item: Data) => (
+    <ListItemComponent
+      onPress={() => handleCategoria(
+        item.colorTheme as String,
+        item.isCompleted as boolean,
+        item.isNegative as boolean)}
+      name={item.name}
+      icon={item.icon}
+      colorTheme={item.colorTheme}
+    />
   )
 
   return (

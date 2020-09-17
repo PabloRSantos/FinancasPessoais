@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { FlatList } from 'react-native'
+import { useTheme } from '../../contexts/themes'
 
 import HeaderComponent from '../../components/Header'
 import TransacoesComponent from '../../components/Transacoes'
@@ -7,6 +8,7 @@ import GraficosComponent from '../../components/Grafico'
 import ContasComponent from '../../components/Contas'
 
 import { Container, ContainerFlatItems } from './styles'
+import { useFocusEffect } from '@react-navigation/native'
 
 interface Item {
   key: string;
@@ -15,6 +17,14 @@ interface Item {
 }
 
 const Home: React.FC = () => {
+  const { switchTheme } = useTheme()
+
+  useFocusEffect(
+    useCallback(() => {
+      switchTheme('blue')
+    }, [])
+  )
+
   const data: Item[] = [
     {
       key: 'Transacoes',

@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import AsyncStorage from '@react-native-community/async-storage'
 
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
+import queries from './queries'
 
 export interface ISignIn {
     email: string,
@@ -30,6 +31,9 @@ const AuthContext = createContext<Context>({
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [signed, setSigned] = useState(false)
+  const [signUpMutation] = useMutation(queries.SignUp)
+  const [signInMutation] = useMutation(queries.SignIn)
+  // const { data, error, loading } = useQuery(queries.GetUser)
 
   useEffect(() => {
     async function loadDatas () {
@@ -41,57 +45,51 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
 
     loadDatas()
-  })
+  }, [])
 
-  const SignIn = (loginData: ISignIn) => {
+  const SignIn = async (loginData: ISignIn) => {
     try {
-      const LoginMutation = gql`
-            Login(email: $email, password: $password){
-                token
-            }
-        `
-
-      const data = useMutation(LoginMutation, {
+      const { data } = await signInMutation({
         variables: {
           email: loginData.email,
           password: loginData.password
         }
       })
 
-      console.log(data)
+      if (data.login.token) {
+        await AsyncStorage.setItem('@Financas/token', data.login.token)
+        setSigned(true)
 
-      //   if (data.token) {
-      //     loginData.remember && await AsyncStorage.setItem('@Proffy/token', data.token)
-      //     setUser(true)
-      //     api.defaults.headers.authorization = `Bearer ${data.token}`
-      //   }
+        return
+      }
 
-      //   if (data.message) { alert(data.message) }
-
-    //   return data
+      // return data
     } catch (e) {
       console.log(e)
     }
   }
 
-  const SignUp = (registerData: ISignUp) => {
-    const RegisterMutation = gql`
-    Cadastro(user: $registerData){
-        token
-    }
-`
+  const SignUp = async (registerData: ISignUp) => {
+    try {
+      const { data } = await signUpMutation({
+        variables: {
+          name: registerData.name,
+          email: registerData.email,
+          password: registerData.password
+        }
+      })
 
-    const data = useMutation(RegisterMutation, {
-      variables: {
-        registerData: registerData
+      if (data.cadastro.token) {
+        await AsyncStorage.setItem('@Financas/token', data.cadastro.token)
+        setSigned(true)
       }
-    })
-
-    console.log(data)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   const SignOut = () => {
-
+    AsyncStorage.removeItem('@Financas/token')
   }
 
   return (
