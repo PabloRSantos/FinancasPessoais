@@ -1,14 +1,37 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CalcButtonComponent from '../../components/CalcButton'
+import { useNavigation } from '@react-navigation/native'
 import 'number-to-locale-string-polyfill'
 
 import { useTransacao } from '../../contexts/transacoes'
+import { useTheme } from '../../contexts/themes'
 
-import { Container, Header, Value, ButtonBlock, Buttons } from './styles'
+import { Container, Header, Value, ButtonBlock, Buttons, Footer, TabItem, TabText } from './styles'
 
 const Calculadora: React.FC = () => {
   const [valueState, setValueState] = useState('R$0,00')
-  const { changeState, createTransacao } = useTransacao()
+  const [active, setActive] = useState<boolean[]>([true, false])
+
+  const { changeState } = useTransacao()
+  const { switchTheme } = useTheme()
+  const navigation = useNavigation()
+
+  useEffect(() => {
+    switchTheme('green')
+  }, [])
+
+  const toggleTabBar = (id: number) => {
+    switch (id) {
+      case 0:
+        switchTheme('green')
+        setActive([true, false])
+        break
+      case 1:
+        switchTheme('red')
+        setActive([false, true])
+        break
+    }
+  }
 
   const formattedNumber = (value: string) => {
     return Number(value
@@ -42,8 +65,9 @@ const Calculadora: React.FC = () => {
   }
 
   const submitValue = async () => {
-    changeState({ valor: valueState })
-    createTransacao()
+    const isNegative = !active[0]
+    changeState({ valor: valueState, isNegative })
+    navigation.navigate('Categorias')
   }
 
   return (
@@ -80,6 +104,20 @@ const Calculadora: React.FC = () => {
         </ButtonBlock>
 
       </Buttons>
+
+      <Footer>
+        <TabItem onPress={() => toggleTabBar(0)}>
+          <TabText active={active[0]}>
+          Depósito
+          </TabText>
+        </TabItem>
+
+        <TabItem onPress={() => toggleTabBar(1)}>
+          <TabText active={active[1]}>
+          Retirada
+          </TabText>
+        </TabItem>
+      </Footer>
     </Container>
   )
 }

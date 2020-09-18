@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useTheme } from '../../contexts/themes'
+import { BorderlessButtonProperties } from 'react-native-gesture-handler'
 
 import {
   Container,
   TopBar,
   Filter,
   FilterIcon,
-  SelectContent,
-  TypeSelected,
+  SelectContainer,
+  Select,
+  SelectedItem,
   ArrowBottom,
   CalendarFilter,
   CalendarFilterIcon,
@@ -15,7 +18,33 @@ import {
   Value
 } from './styles'
 
-const HeaderComponent: React.FC = () => {
+// interface ICalendarFilter extends BorderlessButtonProperties{
+// }
+
+interface HeaderComponentProps {
+  onPressCalendar: () => void
+}
+
+const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar }) => {
+  const [selectedState, setSelectedState] = useState('Saldo')
+  const { switchTheme } = useTheme()
+
+  const handleSelect = (item: string) => {
+    setSelectedState(item)
+
+    switch (item) {
+      case 'Depósitos':
+        switchTheme('green')
+        break
+      case 'Retiradas':
+        switchTheme('red')
+        break
+      case 'Saldo':
+        switchTheme('blue')
+        break
+    }
+  }
+
   return (
     <Container>
       <TopBar>
@@ -23,14 +52,20 @@ const HeaderComponent: React.FC = () => {
           <FilterIcon />
         </Filter>
 
-        <SelectContent>
-          <TypeSelected>
-            Saldo
-          </TypeSelected>
+        <SelectContainer>
+          <SelectedItem>{selectedState}</SelectedItem>
           <ArrowBottom />
-        </SelectContent>
 
-        <CalendarFilter>
+          <Select
+            selectedValue={selectedState}
+            onValueChange={(itemValue) => handleSelect(itemValue as string)}>
+            <Select.Item label='Saldo' value='Saldo'/>
+            <Select.Item label='Depósitos' value='Depósitos'/>
+            <Select.Item label='Retiradas' value='Retiradas'/>
+          </Select>
+        </SelectContainer>
+
+        <CalendarFilter onPress={onPressCalendar}>
           <CalendarFilterIcon />
         </CalendarFilter>
       </TopBar>

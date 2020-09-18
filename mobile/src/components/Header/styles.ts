@@ -1,7 +1,13 @@
 import styled from 'styled-components/native'
 import { BorderlessButton } from 'react-native-gesture-handler'
+import { Picker } from '@react-native-community/picker'
+
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+
+// interface CalendarFilter {
+//     onPressCalendar: () => void
+// }
 
 export const Container = styled.View`
     height: 150px;
@@ -26,21 +32,31 @@ export const FilterIcon = styled(FontAwesome).attrs({
     color: ${props => props.theme.colors.white};
 `
 
-export const SelectContent = styled(BorderlessButton)`
+export const SelectContainer = styled.View`
     background-color: ${props => props.theme.colors.darkPrimary};
-    padding: 5px 20px;
     height: 30px;
-    border-radius: 8px;
+    width: 110px;
+    padding: 0 10px;
 
+    border-radius: 8px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+
+    position: relative;
 `
 
-export const TypeSelected = styled.Text`
-    color: ${props => props.theme.colors.white};
-    font-size: 13px;
+export const Select = styled(Picker)`
+    width: 100%;
+    opacity: 0;
+    position: absolute;
+`
+
+export const SelectedItem = styled.Text`
     font-family: 'Archivo-SemiBold';
+    font-size: 13px;
+    color: ${props => props.theme.colors.white};
+
 `
 
 export const ArrowBottom = styled(MaterialIcons).attrs({

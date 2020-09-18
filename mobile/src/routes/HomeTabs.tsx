@@ -1,21 +1,22 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-import Add from '../pages/Add'
+// import Add from '../pages/Add'
 import Profile from '../pages/Profile'
 import Home from '../pages/Home'
+import Calculadora from '../pages/Calculadora'
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 const { Navigator, Screen } = createBottomTabNavigator()
 
-interface tabBarIconProps {
+export interface tabBarIconProps {
     color: string,
     size: number,
     focused: boolean
 }
 
-function StudyTabs () {
+function HomeTabs () {
   return (
     <Navigator
       tabBarOptions={{
@@ -56,10 +57,11 @@ function StudyTabs () {
         }}
       />
       <Screen
-        name="Add"
-        component={Add}
+        name="Calculadora"
+        component={Calculadora}
         options={{
           tabBarLabel: '',
+          tabBarVisible: false,
           tabBarIcon: ({ color, focused }: tabBarIconProps) =>
             <FontAwesome
               style={{ marginTop: 10 }}
@@ -84,4 +86,4 @@ function StudyTabs () {
   )
 }
 
-export default StudyTabs
+export default HomeTabs
