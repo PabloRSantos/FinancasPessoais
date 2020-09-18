@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTheme } from '../../contexts/themes'
 import { BorderlessButtonProperties } from 'react-native-gesture-handler'
 

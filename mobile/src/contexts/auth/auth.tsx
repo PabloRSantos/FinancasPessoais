@@ -39,7 +39,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     async function loadDatas () {
       const token = await AsyncStorage.getItem('@Financas/token')
 
-      if (token) {
+      if (!token) {
         setSigned(true)
       }
     }

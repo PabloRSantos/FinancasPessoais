@@ -68,6 +68,7 @@ export const ArrowBottom = styled(MaterialIcons).attrs({
 `
 
 export const CalendarFilter = styled(BorderlessButton)`
+    padding: 2px;
 `
 
 export const CalendarFilterIcon = styled(FontAwesome).attrs({

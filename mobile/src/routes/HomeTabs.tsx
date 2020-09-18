@@ -1,10 +1,11 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
-// import Add from '../pages/Add'
 import Profile from '../pages/Profile'
 import Home from '../pages/Home'
 import Calculadora from '../pages/Calculadora'
+
+import { useTheme } from '../contexts/themes'
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
@@ -17,6 +18,7 @@ export interface tabBarIconProps {
 }
 
 function HomeTabs () {
+  const { theme } = useTheme()
   return (
     <Navigator
       tabBarOptions={{
@@ -40,8 +42,8 @@ function HomeTabs () {
         },
         inactiveBackgroundColor: 'white',
         activeBackgroundColor: 'white',
-        inactiveTintColor: '#C6C4C4',
-        activeTintColor: '#0098F6'
+        activeTintColor: theme.colors.primary,
+        inactiveTintColor: '#C6C4C4'
       }}
     >
       <Screen
@@ -49,11 +51,12 @@ function HomeTabs () {
         component={Home}
         options={{
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color, focused }: tabBarIconProps) =>
+          tabBarIcon: ({ focused, color }: tabBarIconProps) =>
             <FontAwesome
               name="home"
               size={30}
-              color={focused ? '#0098F6' : color} />
+              color={focused ? color : '#C6C4C4'}
+            />
         }}
       />
       <Screen
@@ -62,12 +65,13 @@ function HomeTabs () {
         options={{
           tabBarLabel: '',
           tabBarVisible: false,
-          tabBarIcon: ({ color, focused }: tabBarIconProps) =>
+          tabBarIcon: ({ focused, color }: tabBarIconProps) =>
             <FontAwesome
               style={{ marginTop: 10 }}
               name="plus-circle"
               size={50}
-              color={focused ? '#0098F6' : color} />
+              color={focused ? color : '#C6C4C4'}
+            />
         }}
       />
       <Screen
@@ -75,11 +79,11 @@ function HomeTabs () {
         component={Profile}
         options={{
           tabBarLabel: 'Perfil',
-          tabBarIcon: ({ color, focused }: tabBarIconProps) =>
+          tabBarIcon: ({ focused, color }: tabBarIconProps) =>
             <FontAwesome
               name="user"
               size={20}
-              color={focused ? '#0098F6' : color}/>
+              color={focused ? color : '#C6C4C4'}/>
         }}
       />
     </Navigator>
