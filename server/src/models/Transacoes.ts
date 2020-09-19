@@ -26,13 +26,13 @@ const transacoesSchema = new Schema({
     required: true
   },
   categoriaId: {
-    type: Schema.Types.ObjectId,
+    type: [Schema.Types.ObjectId],
     ref: 'categorias',
     required: true
   },
-  isCompleted: {
-    type: Boolean,
-    required: true
+  date: {
+    type: Date,
+    default: new Date()
   },
   isNegative: {
     type: Boolean,

@@ -30,8 +30,8 @@ input createTransacaoInput {
   valor: String,
   title: String,
   isNegative: Boolean,
-  isCompleted: Boolean,
-  categoriaId: String,
+  date: String,
+  categoriaId: [String],
 }
 
 type Categoria {

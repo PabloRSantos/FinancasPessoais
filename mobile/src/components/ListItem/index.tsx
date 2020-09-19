@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BorderlessButtonProperties } from 'react-native-gesture-handler'
 
-import { Container, Item, Icon, Name } from './styles'
+import { Container, Item, Icon, Name, Circle } from './styles'
 
 export interface Data extends BorderlessButtonProperties{
   _id?: string
@@ -9,10 +9,11 @@ export interface Data extends BorderlessButtonProperties{
   name: string,
   colorTheme?: string
   isCompleted?: boolean
-  isNegative?: boolean
 }
 
 const ListItemComponent: React.FC<Data> = ({ name, colorTheme, icon, ...rest }) => {
+  const [selected, setSelected] = useState(false)
+
   return (
     <Container>
       <Item {...rest}>
@@ -20,7 +21,10 @@ const ListItemComponent: React.FC<Data> = ({ name, colorTheme, icon, ...rest }) 
         <Name>
           {name}
         </Name>
+
       </Item>
+
+      <Circle selected={selected}/>
     </Container>
   )
 }

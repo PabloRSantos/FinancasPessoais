@@ -100,7 +100,7 @@ const Calculadora: React.FC = () => {
         <ButtonBlock>
           <CalcButtonComponent onPress={ eraseValue } title='<'/>
           <CalcButtonComponent onPress={() => addValue(0)} title='0'/>
-          <CalcButtonComponent onPress={submitValue} title='v'/>
+          <CalcButtonComponent onPress={submitValue} icon='check'/>
         </ButtonBlock>
 
       </Buttons>

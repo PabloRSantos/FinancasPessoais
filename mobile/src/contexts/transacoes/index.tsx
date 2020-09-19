@@ -7,8 +7,8 @@ interface ChangeState {
     title?: string
     valor?: string
     isNegative?: boolean
-    isCompleted?: boolean
-    categoriaId?: string
+    categoriaId?: string[]
+    date?: Date
 }
 
 interface Context {
@@ -22,33 +22,24 @@ const TransacoesContext = createContext<Context>({
 })
 
 export const TransacaoProvider: React.FC = ({ children }) => {
-  const [datas, setDatas] = useState<ChangeState>()
+  const [datas, setDatas] = useState<ChangeState>({} as ChangeState)
   const [createTransacaoMutation] = useMutation(queries.createTransacao)
 
-  const changeState = (newDatas: ChangeState) => {
-    if (newDatas.title) { setDatas({ ...datas, title: newDatas.title }) }
-
-    if (newDatas.valor) { setDatas({ ...datas, valor: newDatas.valor }) }
-
-    if (newDatas.isCompleted) { setDatas({ ...datas, isCompleted: newDatas.isCompleted }) }
-
-    if (newDatas.isNegative) { setDatas({ ...datas, isNegative: newDatas.isNegative }) }
-
-    if (newDatas.categoriaId) { setDatas({ ...datas, categoriaId: newDatas.categoriaId }) }
+  const changeState = (newDatas?: ChangeState) => {
+    newDatas && setDatas({ ...datas, ...newDatas })
   }
 
   const createTransacao = async () => {
+    console.log(datas)
     const { data } = await createTransacaoMutation({
       variables: {
-        title: 'Comprei algo',
-        valor: datas?.valor,
-        isCompleted: datas?.isCompleted,
-        isNegative: datas?.isNegative,
-        categoriaId: datas?.categoriaId
+        title: datas.title,
+        valor: datas.valor,
+        isNegative: datas.isNegative,
+        categoriaId: datas.categoriaId,
+        date: datas.date
       }
     })
-
-    console.log(datas)
 
     console.log(data.createTransacao)
   }

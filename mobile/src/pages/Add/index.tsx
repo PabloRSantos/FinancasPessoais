@@ -1,86 +1,67 @@
-import React, { useCallback } from 'react'
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
+import React, { useState } from 'react'
 
-import ListItemComponent, { Data } from '../../components/ListItem'
-
-import { useTheme } from '../../contexts/themes'
 import { useTransacao } from '../../contexts/transacoes'
 
-import { Container, ContentTitle, Title, Lista } from './styles'
+import ButtonComponent from '../../components/Button'
+import FooterConfirm from '../../components/FooterConfirm'
+import InputComponent from '../../components/Input'
+
+import { Container, Title, ContentTitle } from './styles'
+import CalendarComponent from '../../components/Calendar'
+import { useNavigation } from '@react-navigation/native'
 
 const Add: React.FC = () => {
-  const { switchTheme } = useTheme()
-  const { changeState } = useTransacao()
+  const [title, setTitle] = useState('')
+  const [calendarVisible, setCalendarVisible] = useState(false)
+  const [date, setDate] = useState(new Date())
   const navigation = useNavigation()
 
-  useFocusEffect(
-    useCallback(() => {
-      switchTheme('blue')
-    }, [])
-  )
+  const { changeState, createTransacao } = useTransacao()
 
-  const handleCategoria = (colorTheme: String, isCompleted: boolean, isNegative: boolean) => {
-    switchTheme(colorTheme)
-    changeState({ isCompleted, isNegative })
-    navigation.navigate('Categorias')
+  const onChangeCalendar = (selectedDate: Date) => {
+    if (!selectedDate) return setCalendarVisible(false)
+    setDate(selectedDate)
+    setCalendarVisible(false)
+    console.log(selectedDate)
   }
 
-  const data: Data[] = [{
-    icon: 'a',
-    name: 'Depósito',
-    colorTheme: 'green',
-    isCompleted: true,
-    isNegative: false
-  }, {
-    icon: 'a',
-    name: 'Prejuizo',
-    colorTheme: 'red',
-    isCompleted: true,
-    isNegative: true
-
-  }, {
-    icon: 'a',
-    name: 'Nova conta',
-    colorTheme: 'red',
-    isCompleted: false,
-    isNegative: true
-
-  },
-  {
-    icon: 'a',
-    name: 'Futuro depósito',
-    colorTheme: 'green',
-    isCompleted: false,
-    isNegative: false
+  const handleConfirm = () => {
+    changeState({ title, date })
+    createTransacao()
+    navigation.navigate('Home')
   }
-  ]
-
-  const renderListItem = (item: Data) => (
-    <ListItemComponent
-      onPress={() => handleCategoria(
-        item.colorTheme as String,
-        item.isCompleted as boolean,
-        item.isNegative as boolean)}
-      name={item.name}
-      icon={item.icon}
-      colorTheme={item.colorTheme}
-    />
-  )
 
   return (
-    <Container>
-      <ContentTitle>
-        <Title>
-          O que você quer adicionar?
-        </Title>
-      </ContentTitle>
+    <>
+      <Container>
+        <ContentTitle>
+          <Title>
+          Ultimas informações
+          </Title>
+        </ContentTitle>
 
-      <Lista
-        data={data}
-        renderItem={({ item }) => renderListItem(item as Data)}
-        keyExtractor={(item, index) => index.toString()}
-      />
-    </Container>
+        <InputComponent
+          classInput='unique'
+          nameIcon='pencil'
+          placeholder='Titulo'
+          value={title}
+          onChangeText={e => setTitle(e)}/>
+
+        <ButtonComponent
+          text='Data de vencimento'
+          active={true}
+          onPress={() => setCalendarVisible(true)}/>
+
+        {calendarVisible &&
+          <CalendarComponent
+            value={date}
+            onChange={(e, date) => onChangeCalendar(date as Date)}/>}
+
+      </Container>
+
+      <FooterConfirm onPress={handleConfirm}/>
+
+    </>
   )
 }
 

@@ -3,6 +3,8 @@ import styled from 'styled-components/native'
 export const Container = styled.View`
     align-items: center;
     padding: 0 25px 25px;
+
+    flex: 1;
 `
 export const ContentTitle = styled.View`
     height: 80px;

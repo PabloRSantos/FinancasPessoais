@@ -1,25 +1,15 @@
-import React, { useState } from 'react'
-import DateTimePicker from '@react-native-community/datetimepicker'
+import React from 'react'
+import DateTimePicker, { DatePickerOptions } from '@react-native-community/datetimepicker'
 import { View } from 'react-native'
 
-const CalendarComponent: React.FC = () => {
-  const [date, setDate] = useState(new Date())
-
-  const onChange = (selectedDate: Date) => {
-    if (!selectedDate) return
-    const currentDate = selectedDate || date
-    setDate(currentDate)
-  }
-
+const CalendarComponent: React.FC<DatePickerOptions> = (props) => {
   return (
     <View>
       <DateTimePicker
-        testID="dateTimePicker"
+        {...props}
         minimumDate={new Date()}
-        value={date}
         mode={'date'}
         display="default"
-        onChange={(e, date) => onChange(date as Date)}
       />
     </View>
 

@@ -6,7 +6,7 @@ interface CreateTransacao {
     valor: String,
     title: String,
     isNegative: Boolean,
-    isCompleted: Boolean,
+    date: Date,
     categoriaId: String,
   }
 }
@@ -17,7 +17,7 @@ interface GetTransacao {
 
 interface UpdateTransacao {
     TransacaoId: String
-    newValor: number
+    newValor: String
 }
 
 interface DeleteTransacao {
@@ -42,7 +42,7 @@ class TransacoesController {
       const userId = context.auth
 
       const {
-        isCompleted,
+        date,
         isNegative,
         title,
         valor,
@@ -51,7 +51,7 @@ class TransacoesController {
 
       const docs = new Transacoes({
         userId,
-        isCompleted,
+        date,
         isNegative,
         title,
         valor,
@@ -68,11 +68,11 @@ class TransacoesController {
   }
 
   async update (_: any, args: UpdateTransacao) {
-    const TransicaoUpdate = await Transacoes.findByIdAndUpdate({ _id: args.TransacaoId }, {
+    const TransacaoUpdate = await Transacoes.findByIdAndUpdate({ _id: args.TransacaoId }, {
       valor: args.newValor
     })
 
-    return TransicaoUpdate
+    return TransacaoUpdate
   }
 
   async delete (_: any, args: DeleteTransacao) {

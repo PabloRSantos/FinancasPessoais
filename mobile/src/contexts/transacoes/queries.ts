@@ -2,13 +2,13 @@ import { gql } from '@apollo/client'
 
 export default {
   createTransacao: gql`
-        mutation ($valor: String, $title: String, $isCompleted: Boolean, $categoriaId: String, $isNegative: Boolean) {
+        mutation ($valor: String, $title: String, $date: Date, $categoriaId: any, $isNegative: Boolean) {
             createTransacao(transacao: {
                 valor: $valor,
                 title: $title,
-                isCompleted: $isCompleted,
-                isNegative: $isNegative
-                categoriaId: $categoriaId
+                isNegative: $isNegative,
+                categoriaId: $categoriaId,
+                date: $date
              }){
                 _id
             }

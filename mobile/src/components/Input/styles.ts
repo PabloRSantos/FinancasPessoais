@@ -1,7 +1,6 @@
 import styled, { css } from 'styled-components/native'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
-
 interface InputProps {
     classInput: string
 }
