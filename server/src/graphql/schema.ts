@@ -2,8 +2,10 @@ import { gql } from 'apollo-server'
 
 const typeRefs = gql`
 
+scalar Date
+
 type User {
-    _id: String,
+    _id: ID,
     name: String,
     email: String,
     password: String,
@@ -11,13 +13,19 @@ type User {
 }
 
 type Transacao {
-    _id: String,
-    categoriaId: String,
+    _id: ID,
+    categoriaId: [ID],
     userId: String,
     valor: String,
     title: String,
-    isCompleted: Boolean,
+    date: Date,
     isNegative: Boolean
+}
+
+input Filters {
+  isNegative: Boolean,
+  date: Date,
+  future: Boolean
 }
 
 input createUserInput {
@@ -30,7 +38,7 @@ input createTransacaoInput {
   valor: String,
   title: String,
   isNegative: Boolean,
-  date: String,
+  date: Date,
   categoriaId: [String],
 }
 
@@ -49,7 +57,7 @@ type Token {
 type Query {
     user: User,
     categorias: [Categoria],
-    transacoes: [Transacao],
+    transacoes(Filters: Filters): [Transacao],
     transacao(TransacaoId: String): Transacao
 }
 
