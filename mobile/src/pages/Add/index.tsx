@@ -22,10 +22,10 @@ const Add: React.FC = () => {
     if (!selectedDate) return setCalendarVisible(false)
     setDate(selectedDate)
     setCalendarVisible(false)
-    console.log(selectedDate)
   }
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    console.log(title)
     changeState({ title, date })
     createTransacao()
     navigation.navigate('Home')
@@ -45,7 +45,7 @@ const Add: React.FC = () => {
           nameIcon='pencil'
           placeholder='Titulo'
           value={title}
-          onChangeText={e => setTitle(e)}/>
+          onChangeText={text => setTitle(text)}/>
 
         <ButtonComponent
           text='Data de vencimento'

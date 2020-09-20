@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useTheme } from '../../contexts/themes'
-import { BorderlessButtonProperties } from 'react-native-gesture-handler'
 
 import {
   Container,
@@ -17,15 +16,14 @@ import {
   Label,
   Value
 } from './styles'
-
-// interface ICalendarFilter extends BorderlessButtonProperties{
-// }
+import { User } from '../../pages/Home'
 
 interface HeaderComponentProps {
   onPressCalendar: () => void
+  user: User
 }
 
-const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar }) => {
+const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user }) => {
   const [selectedState, setSelectedState] = useState('Saldo')
   const { switchTheme } = useTheme()
 
@@ -76,7 +74,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar }) =>
         </Label>
 
         <Value>
-          R$0,00
+          R${user.saldo}
         </Value>
       </ValueContent>
     </Container>

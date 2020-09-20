@@ -3,8 +3,11 @@ import styled from 'styled-components/native'
 export const Container = styled.View`
     flex-direction: row;
     justify-content: space-between;
-
     padding: 30px 15px;
+    width: 100%;
+    background-color: ${props => props.theme.colors.white};
+    border-radius: 8px;
+    margin: 10px 0;
 `
 
 export const Categorias = styled.View`

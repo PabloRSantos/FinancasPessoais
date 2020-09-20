@@ -1,4 +1,6 @@
 import React from 'react'
+import { FlatList } from 'react-native'
+import { Transacao } from '../../pages/Home'
 
 import {
   Container,
@@ -10,18 +12,29 @@ import {
   Grafico
 } from './styles'
 
-const GraficoComponent: React.FC = () => {
+interface GraficoComponentProps {
+  items?: Transacao[]
+}
+
+const GraficoComponent: React.FC<GraficoComponentProps> = ({ items }) => {
+  const renderListItem = (item: Transacao) => (
+    <Items>
+      <Icon />
+      <Name>
+        {item.title}
+      </Name>
+    </Items>
+  )
+
   return (
     <Container>
       <Categorias>
-        {[1, 2, 3, 4, 5].map(numb => (
-          <Items key={numb}>
-            <Icon />
-            <Name>
-            Lazer
-            </Name>
-          </Items>
-        ))}
+        <FlatList
+          data={items}
+          showsVerticalScrollIndicator={false}
+          renderItem={({ item }) => renderListItem(item as Transacao)}
+          keyExtractor={(item: Transacao) => item._id}
+        />
       </Categorias>
 
       <RightSide>

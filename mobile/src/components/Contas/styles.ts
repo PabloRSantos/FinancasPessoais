@@ -1,6 +1,14 @@
 import styled from 'styled-components/native'
 
 export const Container = styled.View`
+     width: 100%;
+    padding: 0 15px;
+    background-color: ${props => props.theme.colors.white};
+    border-radius: 8px;
+    margin: 10px 0;
+`
+
+export const Item = styled.View`
     flex-direction: row;
     width: 100%;
 

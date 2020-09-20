@@ -30,18 +30,9 @@ export const TransacaoProvider: React.FC = ({ children }) => {
   }
 
   const createTransacao = async () => {
-    console.log(datas)
-    const { data } = await createTransacaoMutation({
-      variables: {
-        title: datas.title,
-        valor: datas.valor,
-        isNegative: datas.isNegative,
-        categoriaId: datas.categoriaId,
-        date: datas.date
-      }
+    await createTransacaoMutation({
+      variables: { data: datas }
     })
-
-    console.log(data.createTransacao)
   }
 
   return (
