@@ -7,7 +7,6 @@ const CalendarComponent: React.FC<DatePickerOptions> = (props) => {
     <View>
       <DateTimePicker
         {...props}
-        minimumDate={new Date()}
         mode={'date'}
         display="default"
       />

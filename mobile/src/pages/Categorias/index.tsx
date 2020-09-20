@@ -32,7 +32,6 @@ const Categorias: React.FC = () => {
     const SelectedCategorias = categorias.filter(categoria => categoria !== categoriaId)
 
     if (SelectedCategorias.length === categorias.length) SelectedCategorias.push(categoriaId)
-    console.log(SelectedCategorias.length)
     setCategorias(SelectedCategorias)
     setFooterVisible(SelectedCategorias.length !== 0)
   }
@@ -45,9 +44,10 @@ const Categorias: React.FC = () => {
 
   const renderListItem = (item: Data) => (
     <ListItemComponent
-      onPress={() => handleCategoria(item._id as string)}
+      handleCategoria={id => handleCategoria(id)}
       name={item.name}
       icon={item.icon}
+      _id={item._id}
       colorTheme={item.colorTheme}
     />
   )

@@ -10,7 +10,6 @@ import {
   Name,
   Data,
   RightSide,
-  ContentValue,
   Value
 } from './styles'
 
@@ -42,11 +41,9 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items }) => {
           </LeftSide>
 
           <RightSide>
-            <ContentValue>
-              <Value>
-                {item.valor}
-              </Value>
-            </ContentValue>
+            <Value isNegative={item.isNegative}>
+              {item.valor}
+            </Value>
           </RightSide>
         </Item>
       ))}

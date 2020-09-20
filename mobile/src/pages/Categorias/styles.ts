@@ -21,6 +21,4 @@ export const Title = styled.Text`
 
 export const Lista = styled.FlatList`
     width: 100%;
-    border-bottom-width: 1px;
-    border-color: ${props => props.theme.colors.disabled};
 `

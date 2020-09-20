@@ -1,5 +1,9 @@
 import styled from 'styled-components/native'
 
+interface ValueProps {
+    isNegative: Boolean
+}
+
 export const Container = styled.View`
     width: 100%;
     padding: 0 15px;
@@ -51,18 +55,9 @@ export const Data = styled.Text`
 export const RightSide = styled.View`
 `
 
-export const ContentValue = styled.View`
-    height: 25px;
-    min-width: 50px;
-    border-radius: 15px;
-    background-color: #F52E2B;
-
-    align-items: center;
-    justify-content: center;
-`
-
-export const Value = styled.Text`
-    color: ${props => props.theme.colors.white};
+export const Value = styled.Text<ValueProps>`
     font-size: 10px;
     font-family: 'Poppins-Bold';
+    color: ${props => props.isNegative ? '#F52E2B' : '#109D57'};
+
 `

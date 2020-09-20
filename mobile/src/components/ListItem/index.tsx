@@ -1,22 +1,27 @@
 import React, { useState } from 'react'
-import { BorderlessButtonProperties } from 'react-native-gesture-handler'
 
 import { Container, Item, Icon, Name, Circle } from './styles'
 
-export interface Data extends BorderlessButtonProperties{
-  _id?: string
+export interface Data {
+  _id: string
   icon: string,
   name: string,
   colorTheme?: string
   isCompleted?: boolean
+  handleCategoria: (id: string) => void
 }
 
-const ListItemComponent: React.FC<Data> = ({ name, colorTheme, icon, ...rest }) => {
+const ListItemComponent: React.FC<Data> = ({ name, colorTheme, _id, icon, handleCategoria }) => {
   const [selected, setSelected] = useState(false)
+
+  const selectedItem = (id: string) => {
+    setSelected(!selected)
+    handleCategoria(id)
+  }
 
   return (
     <Container>
-      <Item {...rest}>
+      <Item onPress={() => selectedItem(_id)}>
         <Icon />
         <Name>
           {name}

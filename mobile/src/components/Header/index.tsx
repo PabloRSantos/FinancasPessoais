@@ -21,9 +21,10 @@ import { User } from '../../pages/Home'
 interface HeaderComponentProps {
   onPressCalendar: () => void
   user: User
+  onChangeSelect: (item: string) => void
 }
 
-const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user }) => {
+const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user, onChangeSelect }) => {
   const [selectedState, setSelectedState] = useState('Saldo')
   const { switchTheme } = useTheme()
 
@@ -41,6 +42,8 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user
         switchTheme('blue')
         break
     }
+
+    onChangeSelect(item)
   }
 
   return (

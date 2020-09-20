@@ -4,7 +4,6 @@ import { Alert, FlatList } from 'react-native'
 import HeaderComponent from '../../components/Header'
 import TransacoesComponent from '../../components/Transacoes'
 import GraficosComponent from '../../components/Grafico'
-import ContasComponent from '../../components/Contas'
 
 import { Container } from './styles'
 import CalendarComponent from '../../components/Calendar'
@@ -35,6 +34,12 @@ export interface User {
   saldo: number
 }
 
+interface Filters {
+  isNegative?: boolean,
+  date?: Date,
+  future?: boolean
+}
+
 const Home: React.FC = () => {
   const [showCalendar, setShowCalendar] = useState(false)
   const [date, setDate] = useState(new Date())
@@ -42,7 +47,7 @@ const Home: React.FC = () => {
   const [futureTransactions, setFutureTransactions] = useState<Transacao[]>()
   const [totalTransactions, setTotalTransactions] = useState<Transacao[]>()
   const [user, setUser] = useState<User>({} as User)
-  const [filters, setFilters] = useState({})
+  const [filters, setFilters] = useState<Filters>({})
   const { data, error } = useQuery(queries.query,
     { variables: { filters } })
 
@@ -52,7 +57,6 @@ const Home: React.FC = () => {
     if (!data) return
 
     ChangeUser(data.user as User)
-
     ChangeTransactions(data.transacoes as Transacao[])
   }, [data])
 
@@ -79,8 +83,23 @@ const Home: React.FC = () => {
     setTotalTransactions(TransacoesTotal)
   }
 
+  const onChangeSelect = (item: string) => {
+    if (item === 'Saldo') {
+      const FiltersObject: Filters = filters
+      console.log(FiltersObject)
+
+      delete FiltersObject.isNegative
+
+      return setFilters(FiltersObject)
+    }
+
+    const selectedItem = item === 'Retiradas'
+    setFilters({ ...filters, isNegative: selectedItem })
+  }
+
   const onChangeCalendar = (selectedDate: Date) => {
     if (!selectedDate) return setShowCalendar(false)
+    setFilters({ ...filters, date: selectedDate })
     setDate(selectedDate)
     setShowCalendar(false)
   }
@@ -96,7 +115,7 @@ const Home: React.FC = () => {
     },
     {
       key: 'Contas',
-      render: () => <ContasComponent items={completedTransactions}/>
+      render: () => <TransacoesComponent items={completedTransactions}/>
     }
   ]
 
@@ -104,6 +123,7 @@ const Home: React.FC = () => {
     <Container>
       <HeaderComponent
         user={user}
+        onChangeSelect={item => onChangeSelect(item)}
         onPressCalendar={() => setShowCalendar(true)}/>
 
       {showCalendar &&

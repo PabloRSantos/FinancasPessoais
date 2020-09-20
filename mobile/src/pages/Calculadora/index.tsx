@@ -9,7 +9,7 @@ import { useTheme } from '../../contexts/themes'
 import { Container, Header, Value, ButtonBlock, Buttons, Footer, TabItem, TabText } from './styles'
 
 const Calculadora: React.FC = () => {
-  const [valueState, setValueState] = useState('R$0,00')
+  const [valueState, setValueState] = useState('0,00')
   const [active, setActive] = useState<boolean[]>([true, false])
 
   const { changeState } = useTransacao()
@@ -34,34 +34,34 @@ const Calculadora: React.FC = () => {
   }
 
   const formattedNumber = (value: string) => {
-    return Number(value
-      .replace('R$', '')
-      .replace(',', '')
-      .replace('.', ''))
+    return value
+      .replace(/\D/g, '')
+      .replace(/(\d)(\d{2})$/, '$1,$2')
+      .replace(/(?=(\d{3})+(\D))\B/g, '.')
   }
 
-  const addValue = (valueParam: number) => {
-    const valueStateFormatted = formattedNumber(valueState)
+  const addValue = (valueParam: string) => {
+    if (valueState.length === 14) return
 
-    let result = 0
+    let valueStateFormatted = ''
 
-    if (isNaN(valueStateFormatted)) return
-
-    if (valueState === 'R$0,00') {
-      result = valueParam
+    if (valueState === '0,00') {
+      valueStateFormatted = formattedNumber(valueParam)
     } else {
-      result = Number(valueStateFormatted + valueParam.toString())
+      valueStateFormatted = formattedNumber(valueParam + valueState)
     }
 
-    const formattedResult = result.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-
-    setValueState(formattedResult)
+    setValueState(valueStateFormatted)
   }
 
   const eraseValue = () => {
-    const result = valueState.substring(1)
+    const result = valueState
+      .replace(/\D/g, '')
+      .substring(1)
 
-    setValueState(result)
+    const resultFormatted = formattedNumber(result)
+
+    setValueState(resultFormatted)
   }
 
   const submitValue = async () => {
@@ -74,32 +74,32 @@ const Calculadora: React.FC = () => {
     <Container>
       <Header>
         <Value>
-          {valueState}
+          R${valueState}
         </Value>
       </Header>
 
       <Buttons>
         <ButtonBlock>
-          <CalcButtonComponent onPress={() => addValue(1)} title='1'/>
-          <CalcButtonComponent onPress={() => addValue(2)} title='2'/>
-          <CalcButtonComponent onPress={() => addValue(3)} title='3'/>
+          <CalcButtonComponent onPress={() => addValue('1')} title='1'/>
+          <CalcButtonComponent onPress={() => addValue('2')} title='2'/>
+          <CalcButtonComponent onPress={() => addValue('3')} title='3'/>
         </ButtonBlock>
 
         <ButtonBlock>
-          <CalcButtonComponent onPress={() => addValue(4)} title='4'/>
-          <CalcButtonComponent onPress={() => addValue(5)} title='5'/>
-          <CalcButtonComponent onPress={() => addValue(6)} title='6'/>
+          <CalcButtonComponent onPress={() => addValue('4')} title='4'/>
+          <CalcButtonComponent onPress={() => addValue('5')} title='5'/>
+          <CalcButtonComponent onPress={() => addValue('6')} title='6'/>
         </ButtonBlock>
 
         <ButtonBlock>
-          <CalcButtonComponent onPress={() => addValue(7)} title='7'/>
-          <CalcButtonComponent onPress={() => addValue(8)} title='8'/>
-          <CalcButtonComponent onPress={() => addValue(9)} title='9'/>
+          <CalcButtonComponent onPress={() => addValue('7')} title='7'/>
+          <CalcButtonComponent onPress={() => addValue('8')} title='8'/>
+          <CalcButtonComponent onPress={() => addValue('9')} title='9'/>
         </ButtonBlock>
 
         <ButtonBlock>
           <CalcButtonComponent onPress={ eraseValue } title='<'/>
-          <CalcButtonComponent onPress={() => addValue(0)} title='0'/>
+          <CalcButtonComponent onPress={() => addValue('0')} title='0'/>
           <CalcButtonComponent onPress={submitValue} icon='check'/>
         </ButtonBlock>
 

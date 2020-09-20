@@ -54,6 +54,7 @@ const Add: React.FC = () => {
 
         {calendarVisible &&
           <CalendarComponent
+            minimumDate={new Date()}
             value={date}
             onChange={(e, date) => onChangeCalendar(date as Date)}/>}
 
