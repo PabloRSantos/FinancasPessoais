@@ -5,7 +5,7 @@ interface IUser extends Document {
   _id: String,
   name: String,
   email: String,
-  saldo: Number,
+  saldo: number,
   password: String,
 }
 

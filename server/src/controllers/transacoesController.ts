@@ -1,4 +1,5 @@
 import Transacoes from '@models/Transacoes'
+import Users from '@models/Users'
 import { MyContext } from 'src/server'
 
 interface CreateTransacao {
@@ -13,6 +14,15 @@ interface CreateTransacao {
 
 interface GetTransacao {
     TransacaoId: String
+}
+
+interface GetTransacoesFilters {
+    Filters: {
+      isNegative?: Boolean,
+      date?: String,
+      future?: Boolean,
+      userId: String
+    }
 }
 
 interface UpdateTransacao {
@@ -31,9 +41,13 @@ class TransacoesController {
     return transacao
   }
 
-  async index (_: any, args: any, context: MyContext) {
+  async index (_: any, args: GetTransacoesFilters, context: MyContext) {
     const userId = context.auth
-    const transacoes = await Transacoes.find({ userId })
+    const { future, ...rest } = args.Filters
+    rest.userId = userId.toString()
+
+    const transacoes = await Transacoes.find(rest as any)
+
     return transacoes
   }
 
@@ -48,6 +62,21 @@ class TransacoesController {
         valor,
         categoriaId
       } = args.transacao
+
+      const user = await Users.findById(userId, 'saldo')
+
+      if (!user) return 'Erro ao autenticar usuário'
+
+      const NumberValor = Number(valor
+        .replace('R$', '')
+        .replace('.', '')
+        .replace(',', ''))
+
+      const newBalance = isNegative
+        ? user.saldo - NumberValor
+        : user.saldo + NumberValor
+
+      await Users.findByIdAndUpdate(userId, { saldo: newBalance })
 
       const docs = new Transacoes({
         userId,
@@ -77,8 +106,6 @@ class TransacoesController {
 
   async delete (_: any, args: DeleteTransacao) {
     const TransicaoDelete = await Transacoes.findByIdAndDelete({ _id: args.TransacaoId })
-
-    // console.log(TransicaoDelete)
 
     return TransicaoDelete
   }

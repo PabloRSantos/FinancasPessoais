@@ -16,8 +16,8 @@ export default function authUser (authHeader: String) {
   return jwt.verify(token, auth, (err, decoded) => {
     if (err) return { message: 'Token inválido' }
 
-    const userId = decoded?.toString()
+    const userId = decoded
 
-    return userId
+    return userId as String
   })
 }
