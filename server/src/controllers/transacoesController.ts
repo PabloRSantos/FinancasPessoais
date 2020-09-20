@@ -1,6 +1,7 @@
 import Transacoes from '@models/Transacoes'
 import Users from '@models/Users'
 import { MyContext } from 'src/server'
+import formatDate from 'src/util/formattedDate'
 
 interface CreateTransacao {
   transacao: {
@@ -43,10 +44,22 @@ class TransacoesController {
 
   async index (_: any, args: GetTransacoesFilters, context: MyContext) {
     const userId = context.auth
-    const { future, ...rest } = args.Filters
+    const { future, date, ...rest } = args.Filters
     rest.userId = userId.toString()
 
-    const transacoes = await Transacoes.find(rest as any)
+    let transacoes = await Transacoes.find(rest as any)
+
+    transacoes.forEach(transacao => {
+      transacao.date = formatDate(transacao.date)
+    })
+
+    if (date) {
+      transacoes = transacoes.filter(transacao => {
+        const dateFiltered = formatDate(new Date(date.toString()))
+
+        return transacao.date.getTime() === dateFiltered.getTime() && transacao
+      })
+    }
 
     return transacoes
   }
