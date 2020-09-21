@@ -48,7 +48,7 @@ export const Name = styled.Text`
 
 export const Data = styled.Text`
     color: ${props => props.theme.colors.textInWhite};
-    font-size: 10px;
+    font-size: 8px;
     font-family: 'Poppins-Regular';
 `
 

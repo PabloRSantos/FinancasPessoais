@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
 
 import HeaderComponent from '../../components/Header'
@@ -10,6 +10,7 @@ import CalendarComponent from '../../components/Calendar'
 
 import queries from './queries'
 import { useQuery } from '@apollo/client'
+import { useFocusEffect } from '@react-navigation/native'
 
 interface Item {
   key: string;
@@ -19,11 +20,17 @@ interface Item {
 
 export interface Transacao {
   _id: string,
-  categoriaId: [string],
+  categoria: Categoria,
   valor: string,
   title: string,
-  date: Date,
+  date: Date | string,
   isNegative: Boolean
+}
+
+export interface Categoria {
+  _id: string,
+  icon: string,
+  name: string
 }
 
 export interface User {
@@ -43,9 +50,10 @@ interface Filters {
 const Home: React.FC = () => {
   const [showCalendar, setShowCalendar] = useState(false)
   const [date, setDate] = useState(new Date())
-  const [completedTransactions, setCompletedTransactions] = useState<Transacao[]>()
-  const [futureTransactions, setFutureTransactions] = useState<Transacao[]>()
-  const [totalTransactions, setTotalTransactions] = useState<Transacao[]>()
+  const [completedTransactions, setCompletedTransactions] = useState<Transacao[]>([])
+  const [futureTransactions, setFutureTransactions] = useState<Transacao[]>([])
+  const [totalTransactions, setTotalTransactions] = useState<Transacao[]>([])
+  const [categorias, setCategorias] = useState<Categoria[]>([])
   const [user, setUser] = useState<User>({} as User)
   const [filters, setFilters] = useState<Filters>({})
   const { data, error } = useQuery(queries.query,
@@ -53,16 +61,15 @@ const Home: React.FC = () => {
 
   if (error) Alert.alert('Erro ao buscar informações no servidor')
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     if (!data) return
 
-    ChangeUser(data.user as User)
-    ChangeTransactions(data.transacoes as Transacao[])
-  }, [data])
+    if (data.user) { setUser(data.user) }
 
-  const ChangeUser = (user: User) => {
-    setUser(user)
-  }
+    if (data.transacoes) { ChangeTransactions(data.transacoes as Transacao[]) }
+
+    setCategorias(data.categorias)
+  }, [data]))
 
   const ChangeTransactions = (transacoes: Transacao[]) => {
     const TransacoesFuturas = transacoes
@@ -73,10 +80,10 @@ const Home: React.FC = () => {
         return transacaoDate > today
       })
 
-    const TransacoesTotal = transacoes
-
     const TransacoesCompletadas = transacoes
       .filter((transacao: Transacao) => !TransacoesFuturas.includes(transacao) && transacao)
+
+    const TransacoesTotal = transacoes
 
     setFutureTransactions(TransacoesFuturas)
     setCompletedTransactions(TransacoesCompletadas)
@@ -86,7 +93,6 @@ const Home: React.FC = () => {
   const onChangeSelect = (item: string) => {
     if (item === 'Saldo') {
       const FiltersObject: Filters = filters
-      console.log(FiltersObject)
 
       delete FiltersObject.isNegative
 
@@ -111,7 +117,7 @@ const Home: React.FC = () => {
     },
     {
       key: 'Graficos',
-      render: () => <GraficosComponent items={totalTransactions}/>
+      render: () => <GraficosComponent transacoes={totalTransactions} categorias={categorias}/>
     },
     {
       key: 'Contas',

@@ -13,7 +13,7 @@ import { Alert, ActivityIndicator } from 'react-native'
 import FooterConfirm from '../../components/FooterConfirm'
 
 const Categorias: React.FC = () => {
-  const [categorias, setCategorias] = useState<string[]>([])
+  const [categoria, setCategoria] = useState<string | null>(null)
   const [footerVisible, setFooterVisible] = useState(false)
   const { data, loading, error } = useQuery(queries.getCategorias)
   const { changeState } = useTransacao()
@@ -29,16 +29,20 @@ const Categorias: React.FC = () => {
   }, [])
 
   const handleCategoria = (categoriaId: string) => {
-    const SelectedCategorias = categorias.filter(categoria => categoria !== categoriaId)
+    if (categoriaId === categoria) {
+      setCategoria(null)
+    }
 
-    if (SelectedCategorias.length === categorias.length) SelectedCategorias.push(categoriaId)
-    setCategorias(SelectedCategorias)
-    setFooterVisible(SelectedCategorias.length !== 0)
+    if (categoria === null) {
+      setCategoria(categoriaId)
+    }
+
+    setFooterVisible(categoria !== null)
   }
 
   const handleConfirm = () => {
-    if (!categorias) return Alert.alert('Selecione alguma categoria')
-    changeState({ categoriaId: categorias })
+    if (categoria === null) return Alert.alert('Selecione alguma categoria')
+    changeState({ categoria: categoria })
     navigation.navigate('Add')
   }
 

@@ -6,10 +6,18 @@ export default {
             transacoes (Filters: $filters) {
                 valor,
                 title,
+                categoria {
+                    _id,
+                },
                 isNegative,
                 date,
                 _id,
-                categoriaId
+            }
+
+            categorias {
+                _id,
+                name,
+                icon
             }
 
             user {

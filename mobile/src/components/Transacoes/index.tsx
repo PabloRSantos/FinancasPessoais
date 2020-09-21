@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Transacao } from '../../pages/Home'
 
 import {
@@ -18,7 +18,27 @@ interface TransacoesComponentProps {
 }
 
 const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items }) => {
-  if (!items) {
+  const [itemsState, setItemsState] = useState(items)
+
+  useEffect(() => {
+    if (items) {
+      const itemsFormatted = items.map(item => {
+        const dateParts = item.date.toString().split('T').reverse()
+
+        const date = dateParts[1]
+          .split('-')
+          .reverse()
+          .join('-')
+          .replace(/-/g, '/')
+
+        return { ...item, date }
+      })
+
+      setItemsState(itemsFormatted as Transacao[])
+    }
+  }, [])
+
+  if (!itemsState) {
     return (
       <Name>Nenhum item encontrado</Name>
     )
@@ -26,7 +46,7 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items }) => {
 
   return (
     <Container>
-      {items.map(item => (
+      {itemsState.map(item => (
         <Item key={item._id}>
           <LeftSide>
             <IconCategoria />
@@ -42,7 +62,7 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items }) => {
 
           <RightSide>
             <Value isNegative={item.isNegative}>
-              {item.valor}
+              R${item.valor}
             </Value>
           </RightSide>
         </Item>

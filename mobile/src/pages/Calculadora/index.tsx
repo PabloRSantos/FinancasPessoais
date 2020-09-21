@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import CalcButtonComponent from '../../components/CalcButton'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import 'number-to-locale-string-polyfill'
 
 import { useTransacao } from '../../contexts/transacoes'
 import { useTheme } from '../../contexts/themes'
 
 import { Container, Header, Value, ButtonBlock, Buttons, Footer, TabItem, TabText } from './styles'
+import formattedNumber from '../../utils/formatToReal'
 
 const Calculadora: React.FC = () => {
   const [valueState, setValueState] = useState('0,00')
@@ -16,9 +17,9 @@ const Calculadora: React.FC = () => {
   const { switchTheme } = useTheme()
   const navigation = useNavigation()
 
-  useEffect(() => {
+  useFocusEffect(useCallback(() => {
     switchTheme('green')
-  }, [])
+  }, []))
 
   const toggleTabBar = (id: number) => {
     switch (id) {
@@ -31,13 +32,6 @@ const Calculadora: React.FC = () => {
         setActive([false, true])
         break
     }
-  }
-
-  const formattedNumber = (value: string) => {
-    return value
-      .replace(/\D/g, '')
-      .replace(/(\d)(\d{2})$/, '$1,$2')
-      .replace(/(?=(\d{3})+(\D))\B/g, '.')
   }
 
   const addValue = (valueParam: string) => {

@@ -7,17 +7,17 @@ interface ChangeState {
     title?: string
     valor?: string
     isNegative?: boolean
-    categoriaId?: string[]
+    categoria?: string
     date?: Date
 }
 
 interface Context {
-    changeState: (newDatas: ChangeState) => void,
+    changeState: (newDatas: ChangeState) => boolean,
     createTransacao: () => void
 }
 
 const TransacoesContext = createContext<Context>({
-  changeState: () => {},
+  changeState: () => { return false },
   createTransacao: () => {}
 })
 
@@ -27,6 +27,8 @@ export const TransacaoProvider: React.FC = ({ children }) => {
 
   const changeState = (newDatas?: ChangeState) => {
     newDatas && setDatas({ ...datas, ...newDatas })
+
+    return true
   }
 
   const createTransacao = async () => {

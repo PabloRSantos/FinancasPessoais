@@ -25,8 +25,7 @@ const Add: React.FC = () => {
   }
 
   const handleConfirm = async () => {
-    console.log(title)
-    changeState({ title, date })
+    await Promise.resolve(changeState({ title, date }))
     createTransacao()
     navigation.navigate('Home')
   }

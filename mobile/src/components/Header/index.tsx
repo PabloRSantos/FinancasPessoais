@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useTheme } from '../../contexts/themes'
+import formatToReal from '../../utils/formatToReal'
 
 import {
   Container,
@@ -16,6 +17,7 @@ import {
   Label,
   Value
 } from './styles'
+
 import { User } from '../../pages/Home'
 
 interface HeaderComponentProps {
@@ -26,7 +28,14 @@ interface HeaderComponentProps {
 
 const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user, onChangeSelect }) => {
   const [selectedState, setSelectedState] = useState('Saldo')
+  const [saldoUser, setSaldoUser] = useState('0,00')
   const { switchTheme } = useTheme()
+
+  useEffect(() => {
+    const saldoFormatted = formatToReal(user.saldo.toString())
+
+    setSaldoUser(saldoFormatted)
+  }, [])
 
   const handleSelect = (item: string) => {
     setSelectedState(item)
@@ -77,7 +86,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user
         </Label>
 
         <Value>
-          R${user.saldo}
+          R${saldoUser}
         </Value>
       </ValueContent>
     </Container>
