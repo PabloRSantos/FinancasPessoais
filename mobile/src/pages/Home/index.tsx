@@ -1,7 +1,10 @@
 import React, { useCallback, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
 
+import { useTheme } from '../../contexts/themes'
+
 import HeaderComponent from '../../components/Header'
+import TransacaoDetail from '../../components/TransacaoDetail'
 import TransacoesComponent from '../../components/Transacoes'
 import GraficosComponent from '../../components/Grafico'
 
@@ -9,7 +12,7 @@ import { Container } from './styles'
 import CalendarComponent from '../../components/Calendar'
 
 import queries from './queries'
-import { useQuery } from '@apollo/client'
+import { useLazyQuery } from '@apollo/client'
 import { useFocusEffect } from '@react-navigation/native'
 
 interface Item {
@@ -48,18 +51,28 @@ interface Filters {
 }
 
 const Home: React.FC = () => {
+  const [showDetailModal, setShowDetailModal] = useState(false)
+  const [dataModal, setDataModal] = useState<Transacao>({} as Transacao)
   const [showCalendar, setShowCalendar] = useState(false)
   const [date, setDate] = useState(new Date())
+  const [select, setSelect] = useState('')
   const [completedTransactions, setCompletedTransactions] = useState<Transacao[]>([])
   const [futureTransactions, setFutureTransactions] = useState<Transacao[]>([])
   const [totalTransactions, setTotalTransactions] = useState<Transacao[]>([])
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [user, setUser] = useState<User>({} as User)
   const [filters, setFilters] = useState<Filters>({})
-  const { data, error } = useQuery(queries.query,
+  const [runQuery, { data, error }] = useLazyQuery(queries.query,
     { variables: { filters } })
 
+  const { switchTheme } = useTheme()
+
   if (error) Alert.alert('Erro ao buscar informações no servidor')
+
+  useFocusEffect(useCallback(() => {
+    switchTheme('blue')
+    onChangeSelect('Saldo')
+  }, []))
 
   useFocusEffect(useCallback(() => {
     if (!data) return
@@ -91,10 +104,14 @@ const Home: React.FC = () => {
   }
 
   const onChangeSelect = (item: string) => {
+    setSelect(item)
+
     if (item === 'Saldo') {
       const FiltersObject: Filters = filters
 
       delete FiltersObject.isNegative
+
+      runQuery()
 
       return setFilters(FiltersObject)
     }
@@ -110,10 +127,18 @@ const Home: React.FC = () => {
     setShowCalendar(false)
   }
 
+  const showDetailTransaction = (item: Transacao) => {
+    setDataModal(item)
+    setShowDetailModal(true)
+  }
+
   const dataItems: Item[] = [
     {
       key: 'Transacoes Futuras',
-      render: () => <TransacoesComponent title='Futuras Transações' items={futureTransactions}/>
+      render: () => <TransacoesComponent
+        showDetailTransaction={(item) => showDetailTransaction(item)}
+        title='Futuras Transações'
+        items={futureTransactions}/>
     },
     {
       key: 'Graficos',
@@ -121,7 +146,10 @@ const Home: React.FC = () => {
     },
     {
       key: 'Transacoes',
-      render: () => <TransacoesComponent title='Transações Finalizadas' items={completedTransactions}/>
+      render: () => <TransacoesComponent
+        showDetailTransaction={(item) => showDetailTransaction(item)}
+        title='Transações Finalizadas'
+        items={completedTransactions}/>
     }
   ]
 
@@ -129,6 +157,7 @@ const Home: React.FC = () => {
     <Container>
       <HeaderComponent
         user={user}
+        selectInitial={select}
         onChangeSelect={item => onChangeSelect(item)}
         onPressCalendar={() => setShowCalendar(true)}/>
 
@@ -136,6 +165,10 @@ const Home: React.FC = () => {
         <CalendarComponent
           value={date}
           onChange={(e, date) => onChangeCalendar(date as Date)}/>}
+
+      {showDetailModal && <TransacaoDetail
+        dataModal={dataModal}
+        onPress={() => setShowDetailModal(false)}/>}
 
       <FlatList
         data= {dataItems}

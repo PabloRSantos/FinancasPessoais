@@ -25,7 +25,7 @@ const Categorias: React.FC = () => {
   }
 
   useEffect(() => {
-    switchTheme('blue')
+    switchTheme('green')
   }, [])
 
   const handleCategoria = (categoriaId: string) => {

@@ -6,7 +6,7 @@ interface ContainerProps {
 }
 
 export const Container = styled(RectButton)<ContainerProps>`
-    background-color: ${props => props.active ? '#109D57' : props.theme.colors.disabled};
+    background-color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.disabled};
     width: 100%;
     height: 60px;
     border-radius: 8px;

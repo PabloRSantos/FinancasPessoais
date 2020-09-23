@@ -1,4 +1,5 @@
 import styled from 'styled-components/native'
+import { BorderlessButton } from 'react-native-gesture-handler'
 
 interface ValueProps {
     isNegative: Boolean
@@ -19,7 +20,7 @@ export const Title = styled.Text`
     text-align: center;
 `
 
-export const Item = styled.View`
+export const Item = styled(BorderlessButton)`
  flex-direction: row;
     align-items: center;
     justify-content: space-between;

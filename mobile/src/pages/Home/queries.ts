@@ -8,6 +8,8 @@ export default {
                 title,
                 categoria {
                     _id,
+                    name,
+                    icon
                 },
                 isNegative,
                 date,

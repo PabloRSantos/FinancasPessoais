@@ -11,15 +11,14 @@ import formattedNumber from '../../utils/formatToReal'
 
 const Calculadora: React.FC = () => {
   const [valueState, setValueState] = useState('0,00')
-  const [active, setActive] = useState<boolean[]>([true, false])
+  const [active, setActive] = useState<boolean[]>([])
 
   const { changeState } = useTransacao()
   const { switchTheme } = useTheme()
   const navigation = useNavigation()
 
   useFocusEffect(useCallback(() => {
-    switchTheme('green')
-    setActive([true, false])
+    toggleTabBar(0)
   }, []))
 
   const toggleTabBar = (id: number) => {

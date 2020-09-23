@@ -17,9 +17,10 @@ import {
 interface TransacoesComponentProps {
   items?: Transacao[]
   title: string
+  showDetailTransaction: (item: Transacao) => void
 }
 
-const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items, title }) => {
+const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items, title, showDetailTransaction }) => {
   const [itemsState, setItemsState] = useState(items)
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items, title 
         {title}
       </Title>
       {itemsState.map(item => (
-        <Item key={item._id}>
+        <Item key={item._id} onPress={() => showDetailTransaction(item)}>
           <LeftSide>
             <IconCategoria />
             <TextCategoria>

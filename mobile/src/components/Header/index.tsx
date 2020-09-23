@@ -24,12 +24,17 @@ interface HeaderComponentProps {
   onPressCalendar: () => void
   user: User
   onChangeSelect: (item: string) => void
+  selectInitial: string
 }
 
-const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user, onChangeSelect }) => {
-  const [selectedState, setSelectedState] = useState('Saldo')
+const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user, onChangeSelect, selectInitial }) => {
+  const [selectedState, setSelectedState] = useState(selectInitial)
   const [saldoUser, setSaldoUser] = useState('0,00')
   const { switchTheme } = useTheme()
+
+  useEffect(() => {
+    setSelectedState(selectInitial)
+  }, [selectInitial])
 
   useEffect(() => {
     if (!user.saldo) return

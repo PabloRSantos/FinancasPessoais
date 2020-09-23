@@ -5,7 +5,7 @@ import red from '../styles/themes/red'
 import { DefaultTheme, ThemeProvider } from 'styled-components'
 
 interface IContext {
-    switchTheme: (newTheme: String) => void
+    switchTheme: (newTheme: string) => void
     theme: DefaultTheme
 }
 
@@ -17,16 +17,17 @@ const ThemeContext = createContext<IContext>({
 const ThemeContextProvider: React.FC = ({ children }) => {
   const [temaAtual, setTemaAtual] = useState(blue)
 
-  function switchTheme (newTheme: String) {
+  function switchTheme (newTheme: string) {
     switch (newTheme) {
       case 'blue':
         setTemaAtual(blue)
-        return
+        break
       case 'red':
         setTemaAtual(red)
-        return
+        break
       case 'green':
         setTemaAtual(green)
+        break
     }
   }
 
