@@ -1,18 +1,20 @@
 import mongoose, { Document } from 'mongoose'
+import { ICategoria } from './Categorias'
+import { IUser } from './Users'
 const Schema = mongoose.Schema
 
 interface ITransacao extends Document {
   _id: String,
-  userId: String,
+  user: [IUser],
   valor: String,
   title: String,
-  categoriaId: String,
+  categorias: ICategoria,
   date: Date
   isNegative: Boolean
 }
 
 const transacoesSchema = new Schema({
-  userId: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'users',
     required: true
@@ -25,8 +27,8 @@ const transacoesSchema = new Schema({
     type: String,
     required: true
   },
-  categoriaId: {
-    type: [Schema.Types.ObjectId],
+  categoria: {
+    type: Schema.Types.ObjectId,
     ref: 'categorias',
     required: true
   },

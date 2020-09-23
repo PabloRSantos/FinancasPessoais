@@ -1,15 +1,15 @@
 import mongoose, { Document } from 'mongoose'
 const Schema = mongoose.Schema
 
-interface ICategoria extends Document {
+export interface ICategoria extends Document {
   _id: String,
-  userId: [String],
+  users: [String],
   name: String,
   global: Boolean,
 }
 
 const categoriasSchema = new Schema({
-  userId: {
+  users: {
     type: [Schema.Types.ObjectId],
     ref: 'users'
   },

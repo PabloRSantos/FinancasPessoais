@@ -9,7 +9,7 @@ interface CreateTransacao {
     title: String,
     isNegative: Boolean,
     date: Date,
-    categoriaId: String,
+    categoria: String,
   }
 }
 
@@ -22,7 +22,7 @@ interface GetTransacoesFilters {
       isNegative?: Boolean,
       date?: String,
       future?: Boolean,
-      userId: String
+      user: String
     }
 }
 
@@ -45,9 +45,10 @@ class TransacoesController {
   async index (_: any, args: GetTransacoesFilters, context: MyContext) {
     const userId = context.auth
     const { future, date, ...rest } = args.Filters
-    rest.userId = userId.toString()
+    rest.user = userId.toString()
 
     let transacoes = await Transacoes.find(rest as any)
+      .populate(['categoria', 'user'])
 
     transacoes.forEach(transacao => {
       transacao.date = formatDate(transacao.date)
@@ -68,36 +69,39 @@ class TransacoesController {
     try {
       const userId = context.auth
 
-      const {
+      let {
         date,
         isNegative,
         title,
         valor,
-        categoriaId
+        categoria
       } = args.transacao
 
       const user = await Users.findById(userId, 'saldo')
 
       if (!user) return 'Erro ao autenticar usuário'
 
-      const NumberValor = Number(valor
-        .replace('R$', '')
-        .replace('.', '')
-        .replace(',', ''))
+      if (!valor.includes(',')) {
+        valor = valor + ',00'
+      }
+
+      const NumberValor = Number(valor.replace(/\D/g, ''))
 
       const newBalance = isNegative
         ? user.saldo - NumberValor
         : user.saldo + NumberValor
 
+      console.log(user.saldo)
+
       await Users.findByIdAndUpdate(userId, { saldo: newBalance })
 
       const docs = new Transacoes({
-        userId,
+        user: userId,
         date,
         isNegative,
         title,
         valor,
-        categoriaId
+        categoria
       })
 
       await docs.save()

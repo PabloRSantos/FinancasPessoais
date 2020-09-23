@@ -1,7 +1,7 @@
 import mongoose, { Document } from 'mongoose'
 const Schema = mongoose.Schema
 
-interface IUser extends Document {
+export interface IUser extends Document {
   _id: String,
   name: String,
   email: String,

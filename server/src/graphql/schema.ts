@@ -14,8 +14,8 @@ type User {
 
 type Transacao {
     _id: ID,
-    categoriaId: [ID],
-    userId: String,
+    categoria: Categoria,
+    user: User,
     valor: String,
     title: String,
     date: Date,
@@ -39,12 +39,12 @@ input createTransacaoInput {
   title: String,
   isNegative: Boolean,
   date: Date,
-  categoriaId: [String],
+  categoria: ID,
 }
 
 type Categoria {
   _id: String,
-  userId: [String],
+  users: [User],
   name: String,
   global: Boolean,
   icon: String
