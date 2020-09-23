@@ -19,6 +19,7 @@ const Calculadora: React.FC = () => {
 
   useFocusEffect(useCallback(() => {
     switchTheme('green')
+    setActive([true, false])
   }, []))
 
   const toggleTabBar = (id: number) => {
@@ -42,7 +43,7 @@ const Calculadora: React.FC = () => {
     if (valueState === '0,00') {
       valueStateFormatted = formattedNumber(valueParam)
     } else {
-      valueStateFormatted = formattedNumber(valueParam + valueState)
+      valueStateFormatted = formattedNumber(valueState + valueParam)
     }
 
     setValueState(valueStateFormatted)

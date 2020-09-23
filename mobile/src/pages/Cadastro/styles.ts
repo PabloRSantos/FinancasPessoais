@@ -1,6 +1,8 @@
 import styled from 'styled-components/native'
 
-export const Container = styled.View`
+export const Container = styled.KeyboardAvoidingView.attrs({
+  behavior: 'padding'
+})`
     flex: 1;
     background-color: ${props => props.theme.colors.blue};
     padding: 0 25px;

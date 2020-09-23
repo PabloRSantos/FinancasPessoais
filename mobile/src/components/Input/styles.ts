@@ -9,6 +9,17 @@ export const Container = styled.View`
     width: 100%;
 `
 
+export const InputContainer = styled.View`
+    width: 100%;
+`
+
+export const Label = styled.Text`
+  font-size: 12px;
+  font-family: 'Poppin-Medium';
+  color: ${props => props.theme.colors.textInWhite};
+  opacity: .6;
+`
+
 export const Input = styled.TextInput<InputProps>`
     width: 100%;
     height: 60px;

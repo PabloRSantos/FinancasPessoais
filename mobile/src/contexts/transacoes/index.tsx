@@ -12,8 +12,8 @@ interface ChangeState {
 }
 
 interface Context {
-    changeState: (newDatas: ChangeState) => boolean,
-    createTransacao: () => void
+    changeState: (newDatas: ChangeState) => void,
+    createTransacao: (title: string, date: Date) => void
 }
 
 const TransacoesContext = createContext<Context>({
@@ -27,11 +27,10 @@ export const TransacaoProvider: React.FC = ({ children }) => {
 
   const changeState = (newDatas?: ChangeState) => {
     newDatas && setDatas({ ...datas, ...newDatas })
-
-    return true
   }
 
-  const createTransacao = async () => {
+  const createTransacao = async (title: string, date: Date) => {
+    setDatas({ ...datas, title, date })
     await createTransacaoMutation({
       variables: { data: datas }
     })

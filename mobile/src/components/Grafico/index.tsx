@@ -9,7 +9,9 @@ import {
   Icon,
   Name,
   RightSide,
-  Grafico
+  Grafico,
+  SpanButton,
+  Span
 } from './styles'
 
 interface GraficoComponentProps {
@@ -85,6 +87,11 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
 
       <RightSide>
         <Grafico data={pieData}/>
+        <SpanButton>
+          <Span>
+            Ver mais
+          </Span>
+        </SpanButton>
       </RightSide>
     </Container>
   )

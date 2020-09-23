@@ -1,20 +1,24 @@
 import React from 'react'
 import { TextInputProps } from 'react-native'
 
-import { Container, Input, Icone } from './styles'
+import { Container, InputContainer, Input, Icone, Label } from './styles'
 
 // lock user envelope
 
 interface IInputComponentProps extends TextInputProps{
   nameIcon: string,
   classInput: string,
+  label?: string
 }
 
-const InputComponent: React.FC<IInputComponentProps> = ({ nameIcon, classInput, ...rest }) => {
+const InputComponent: React.FC<IInputComponentProps> = ({ nameIcon, classInput, label, ...rest }) => {
   return (
     <Container>
-      <Icone name={nameIcon}/>
-      <Input classInput={classInput} {...rest}/>
+      {label && <Label>{label}</Label>}
+      <InputContainer>
+        <Icone name={nameIcon}/>
+        <Input classInput={classInput} {...rest}/>
+      </InputContainer>
     </Container>
   )
 }

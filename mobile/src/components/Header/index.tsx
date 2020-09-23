@@ -32,10 +32,11 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user
   const { switchTheme } = useTheme()
 
   useEffect(() => {
+    if (!user.saldo) return
     const saldoFormatted = formatToReal(user.saldo.toString())
 
     setSaldoUser(saldoFormatted)
-  }, [])
+  }, [user])
 
   const handleSelect = (item: string) => {
     setSelectedState(item)

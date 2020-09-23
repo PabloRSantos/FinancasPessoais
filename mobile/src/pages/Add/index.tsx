@@ -16,7 +16,7 @@ const Add: React.FC = () => {
   const [date, setDate] = useState(new Date())
   const navigation = useNavigation()
 
-  const { changeState, createTransacao } = useTransacao()
+  const { createTransacao } = useTransacao()
 
   const onChangeCalendar = (selectedDate: Date) => {
     if (!selectedDate) return setCalendarVisible(false)
@@ -25,8 +25,7 @@ const Add: React.FC = () => {
   }
 
   const handleConfirm = async () => {
-    await Promise.resolve(changeState({ title, date }))
-    createTransacao()
+    createTransacao(title, date)
     navigation.navigate('Home')
   }
 

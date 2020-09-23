@@ -34,10 +34,10 @@ export interface Categoria {
 }
 
 export interface User {
-  _id: String,
-  name: String,
-  email: String,
-  password: String,
+  _id: string,
+  name: string,
+  email: string,
+  password: string,
   saldo: number
 }
 
@@ -112,16 +112,16 @@ const Home: React.FC = () => {
 
   const dataItems: Item[] = [
     {
-      key: 'Transacoes',
-      render: () => <TransacoesComponent items={futureTransactions}/>
+      key: 'Transacoes Futuras',
+      render: () => <TransacoesComponent title='Futuras Transações' items={futureTransactions}/>
     },
     {
       key: 'Graficos',
       render: () => <GraficosComponent transacoes={totalTransactions} categorias={categorias}/>
     },
     {
-      key: 'Contas',
-      render: () => <TransacoesComponent items={completedTransactions}/>
+      key: 'Transacoes',
+      render: () => <TransacoesComponent title='Transações Finalizadas' items={completedTransactions}/>
     }
   ]
 

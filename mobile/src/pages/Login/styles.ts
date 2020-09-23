@@ -2,7 +2,9 @@ import styled from 'styled-components/native'
 import { BorderlessButton } from 'react-native-gesture-handler'
 import Logo from '../../../assets/svgs/Logo.svg'
 
-export const Container = styled.View`
+export const Container = styled.KeyboardAvoidingView.attrs({
+  behavior: 'padding'
+})`
     flex: 1;
     background-color: #0098F6;
 

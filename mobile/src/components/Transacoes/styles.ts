@@ -6,10 +6,17 @@ interface ValueProps {
 
 export const Container = styled.View`
     width: 100%;
-    padding: 0 15px;
+    padding: 25px 15px 15px;
     background-color: ${props => props.theme.colors.white};
     border-radius: 8px;
     margin: 10px 0;
+`
+
+export const Title = styled.Text`
+    color: ${props => props.theme.colors.primary};
+    font-size: 16px;
+    font-family: 'Poppins-Bold';
+    text-align: center;
 `
 
 export const Item = styled.View`

@@ -1,5 +1,6 @@
 import styled from 'styled-components/native'
 import { PieChart } from 'react-native-svg-charts'
+import { BorderlessButton } from 'react-native-gesture-handler'
 
 interface IconProps {
     color: string
@@ -16,6 +17,7 @@ export const Container = styled.View`
 `
 
 export const Categorias = styled.View`
+
 `
 
 export const Items = styled.View`
@@ -40,9 +42,21 @@ export const Name = styled.Text`
 `
 
 export const RightSide = styled.View`
+    align-items: center;
+    justify-content: center;
 `
 
 export const Grafico = styled(PieChart)`
-    min-width: 200px;
-    min-height: 200px;
+    width: 200px;
+    height: 200px;
+`
+
+export const SpanButton = styled(BorderlessButton)`
+    margin-top: 15px;
+`
+
+export const Span = styled.Text`
+    color: ${props => props.theme.colors.primary};
+    font-size: 10px;
+    font-family: 'Poppins-Medium';
 `

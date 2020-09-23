@@ -10,14 +10,16 @@ import {
   Name,
   Data,
   RightSide,
-  Value
+  Value,
+  Title
 } from './styles'
 
 interface TransacoesComponentProps {
   items?: Transacao[]
+  title: string
 }
 
-const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items }) => {
+const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items, title }) => {
   const [itemsState, setItemsState] = useState(items)
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items }) => {
 
       setItemsState(itemsFormatted as Transacao[])
     }
-  }, [])
+  }, [items])
 
   if (!itemsState) {
     return (
@@ -46,6 +48,9 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items }) => {
 
   return (
     <Container>
+      <Title>
+        {title}
+      </Title>
       {itemsState.map(item => (
         <Item key={item._id}>
           <LeftSide>
