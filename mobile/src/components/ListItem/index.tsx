@@ -6,17 +6,15 @@ export interface Data {
   _id: string
   icon: string,
   name: string,
-  colorTheme?: string
-  isCompleted?: boolean
-  handleCategoria: (id: string) => void
+  handleItem: (id: string) => void
 }
 
-const ListItemComponent: React.FC<Data> = ({ name, colorTheme, _id, icon, handleCategoria }) => {
+const ListItemComponent: React.FC<Data> = ({ name, _id, icon, handleItem }) => {
   const [selected, setSelected] = useState(false)
 
   const selectedItem = (id: string) => {
     setSelected(!selected)
-    handleCategoria(id)
+    handleItem(id)
   }
 
   return (

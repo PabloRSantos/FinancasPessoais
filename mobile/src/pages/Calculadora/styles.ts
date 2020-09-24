@@ -5,13 +5,17 @@ interface ITabText {
     active: boolean
 }
 
+interface ICircleProps {
+    active: boolean
+}
+
 export const Container = styled.View`
     flex: 1;
     align-items: center;
 `
 
 export const Header = styled.View`
-    height: 150px;
+    height: 100px;
     width: 100%;
     background-color: ${props => props.theme.colors.primary};
     padding: 0 25px;
@@ -23,6 +27,8 @@ export const Header = styled.View`
 export const Value = styled.Text`
     font-family: 'Poppins-Bold';
     font-size: 30px;
+    flex: 1;
+    margin-top: 10px;
     color: ${props => props.theme.colors.white};
 `
 
@@ -43,7 +49,7 @@ export const ButtonBlock = styled.View`
 
 `
 
-export const Footer = styled.View`
+export const TabTop = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -51,7 +57,8 @@ export const Footer = styled.View`
     height: 64px;
     width: 100%;
 
-    background-color: ${props => props.theme.colors.white};
+    background-color: ${props => props.theme.colors.primary};
+
 `
 export const TabItem = styled(BorderlessButton)`
     padding: 0 15%;
@@ -64,6 +71,16 @@ export const TabItem = styled(BorderlessButton)`
 
 export const TabText = styled.Text<ITabText>`
     font-family: 'Archivo-Bold';
-    font-size: 13px;
-    color: ${props => props.active ? props.theme.colors.primary : props.theme.colors.disabled};
+    font-size: 12px;
+    color: ${props => props.active ? props.theme.colors.white : props.theme.colors.disabled};
+`
+
+export const Circle = styled.View<ICircleProps>`
+    width: 5px;
+    height: 5px;
+    border-radius: 2.5px;
+    background-color: ${props => props.theme.colors.white};
+    margin-top: 3px;
+
+    opacity: ${props => props.active ? 1 : 0};
 `

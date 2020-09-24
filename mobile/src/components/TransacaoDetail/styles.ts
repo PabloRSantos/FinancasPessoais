@@ -94,6 +94,7 @@ export const Info = styled.Text`
     font-size: 14px;
     font-family: 'Poppins-Medium';
     color: ${props => props.theme.colors.textInWhite};
+    max-width: 90%;
 `
 
 export const CategoriaContainer = styled.View`

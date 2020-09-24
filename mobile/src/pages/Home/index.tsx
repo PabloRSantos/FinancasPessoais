@@ -5,6 +5,7 @@ import { useTheme } from '../../contexts/themes'
 
 import HeaderComponent from '../../components/Header'
 import TransacaoDetail from '../../components/TransacaoDetail'
+import FilterModal from '../../components/Modal'
 import TransacoesComponent from '../../components/Transacoes'
 import GraficosComponent from '../../components/Grafico'
 
@@ -53,6 +54,7 @@ interface Filters {
 const Home: React.FC = () => {
   const [showDetailModal, setShowDetailModal] = useState(false)
   const [dataModal, setDataModal] = useState<Transacao>({} as Transacao)
+  const [showFilterModal, setShowFilterModal] = useState(false)
   const [showCalendar, setShowCalendar] = useState(false)
   const [date, setDate] = useState(new Date())
   const [select, setSelect] = useState('')
@@ -159,16 +161,24 @@ const Home: React.FC = () => {
         user={user}
         selectInitial={select}
         onChangeSelect={item => onChangeSelect(item)}
-        onPressCalendar={() => setShowCalendar(true)}/>
+        onPressCalendar={() => setShowCalendar(true)}
+        onPressFilter={() => setShowFilterModal(true)}/>
 
       {showCalendar &&
         <CalendarComponent
           value={date}
           onChange={(e, date) => onChangeCalendar(date as Date)}/>}
 
+      {showFilterModal &&
+        <FilterModal onPress={() => setShowFilterModal(false)}/>
+      }
+
       {showDetailModal && <TransacaoDetail
         dataModal={dataModal}
-        onPress={() => setShowDetailModal(false)}/>}
+        handleModal={(action: boolean) => {
+          setShowDetailModal(false)
+          action && runQuery()
+        }}/>}
 
       <FlatList
         data= {dataItems}

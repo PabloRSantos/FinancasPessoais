@@ -7,6 +7,7 @@ class UsersControllers {
       const userId = context.auth
 
       const user = await Users.findById(userId)
+
       return user
     } catch (error) {
       console.log(error)

@@ -1,6 +1,6 @@
 import styled from 'styled-components/native'
 import { RectButton } from 'react-native-gesture-handler'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Feather from 'react-native-vector-icons/Feather'
 
 interface ContainerProps {
   isConfirmButton: boolean
@@ -24,8 +24,8 @@ export const Value = styled.Text`
     font-size: 30px;
     font-family: 'Archivo-Bold';
 `
-export const Icon = styled(FontAwesome).attrs({
-  size: 20,
+export const Icon = styled(Feather).attrs({
+  size: 25,
   color: 'white'
 })`
 

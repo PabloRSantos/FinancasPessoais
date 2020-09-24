@@ -6,7 +6,17 @@ import 'number-to-locale-string-polyfill'
 import { useTransacao } from '../../contexts/transacoes'
 import { useTheme } from '../../contexts/themes'
 
-import { Container, Header, Value, ButtonBlock, Buttons, Footer, TabItem, TabText } from './styles'
+import {
+  Container,
+  Header,
+  Value,
+  ButtonBlock,
+  Buttons,
+  TabTop,
+  TabItem,
+  TabText,
+  Circle
+} from './styles'
 import formattedNumber from '../../utils/formatToReal'
 
 const Calculadora: React.FC = () => {
@@ -66,6 +76,22 @@ const Calculadora: React.FC = () => {
 
   return (
     <Container>
+      <TabTop>
+        <TabItem onPress={() => toggleTabBar(0)}>
+          <TabText active={active[0]}>
+          Depósito
+          </TabText>
+          <Circle active={active[0]}/>
+        </TabItem>
+
+        <TabItem onPress={() => toggleTabBar(1)}>
+          <TabText active={active[1]}>
+          Retirada
+          </TabText>
+          <Circle active={active[1]}/>
+        </TabItem>
+      </TabTop>
+
       <Header>
         <Value>
           R${valueState}
@@ -92,26 +118,13 @@ const Calculadora: React.FC = () => {
         </ButtonBlock>
 
         <ButtonBlock>
-          <CalcButtonComponent onPress={ eraseValue } title='<'/>
+          <CalcButtonComponent onPress={ eraseValue } icon='delete'/>
           <CalcButtonComponent onPress={() => addValue('0')} title='0'/>
           <CalcButtonComponent onPress={submitValue} icon='check'/>
         </ButtonBlock>
 
       </Buttons>
 
-      <Footer>
-        <TabItem onPress={() => toggleTabBar(0)}>
-          <TabText active={active[0]}>
-          Depósito
-          </TabText>
-        </TabItem>
-
-        <TabItem onPress={() => toggleTabBar(1)}>
-          <TabText active={active[1]}>
-          Retirada
-          </TabText>
-        </TabItem>
-      </Footer>
     </Container>
   )
 }

@@ -55,11 +55,10 @@ const Categorias: React.FC = () => {
 
   const renderListItem = (item: Data) => (
     <ListItemComponent
-      handleCategoria={id => handleCategoria(id)}
+      handleItem={id => handleCategoria(id)}
       name={item.name}
       icon={item.icon}
       _id={item._id}
-      colorTheme={item.colorTheme}
     />
   )
 

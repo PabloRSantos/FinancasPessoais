@@ -22,12 +22,13 @@ import { User } from '../../pages/Home'
 
 interface HeaderComponentProps {
   onPressCalendar: () => void
-  user: User
+  onPressFilter: () => void
   onChangeSelect: (item: string) => void
+  user: User
   selectInitial: string
 }
 
-const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user, onChangeSelect, selectInitial }) => {
+const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, onPressFilter, user, onChangeSelect, selectInitial }) => {
   const [selectedState, setSelectedState] = useState(selectInitial)
   const [saldoUser, setSaldoUser] = useState('0,00')
   const { switchTheme } = useTheme()
@@ -64,7 +65,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, user
   return (
     <Container>
       <TopBar>
-        <Filter>
+        <Filter onPress={onPressFilter}>
           <FilterIcon />
         </Filter>
 

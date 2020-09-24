@@ -1,7 +1,9 @@
 import React from 'react'
-import { BorderlessButtonProperties } from 'react-native-gesture-handler'
 
 import { Transacao } from '../../pages/Home'
+
+import { useMutation } from '@apollo/client'
+import graphql from './graphql'
 
 import {
   Container,
@@ -22,14 +24,24 @@ import {
   ActionContainer
 } from './styles'
 
-interface TransacaoDetailProps extends BorderlessButtonProperties{
+interface TransacaoDetailProps {
   dataModal: Transacao
+  handleModal: (action: boolean) => void
 }
 
-const TransacaoDetail: React.FC<TransacaoDetailProps> = ({ dataModal, ...rest }) => {
+const TransacaoDetail: React.FC<TransacaoDetailProps> = ({ dataModal, handleModal }) => {
+  const [runMutation] = useMutation(graphql.mutation)
+
+  const removeItem = async (id: String) => {
+    const { data, errors } = await runMutation({ variables: { TransacaoId: id } })
+    errors && console.log(errors)
+    data && console.log(data)
+    handleModal(true)
+  }
+
   return (
     <Container>
-      <Background {...rest}/>
+      <Background onPress={() => handleModal(false)}/>
       <Modal>
         <Top>
           <BigIcon />
@@ -73,7 +85,7 @@ const TransacaoDetail: React.FC<TransacaoDetailProps> = ({ dataModal, ...rest })
               </Info>
             </ActionContainer>
 
-            <ActionContainer>
+            <ActionContainer onPress={() => removeItem(dataModal._id)}>
               <Icon />
               <Info>
               Remover

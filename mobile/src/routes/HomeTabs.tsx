@@ -64,7 +64,6 @@ function HomeTabs () {
         component={Calculadora}
         options={{
           tabBarLabel: '',
-          tabBarVisible: false,
           tabBarIcon: ({ focused, color }: tabBarIconProps) =>
             <FontAwesome
               style={{ marginTop: 10 }}
