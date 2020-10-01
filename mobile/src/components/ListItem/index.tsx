@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { Container, Item, Icon, Name, Circle } from './styles'
+import { Container, Item, BgIcon, Icon, Name, Circle } from './styles'
 
 export interface Data {
   _id: string
@@ -20,7 +20,9 @@ const ListItemComponent: React.FC<Data> = ({ name, _id, icon, handleItem }) => {
   return (
     <Container>
       <Item onPress={() => selectedItem(_id)}>
-        <Icon />
+        <BgIcon>
+          <Icon source={{ uri: icon }}/>
+        </BgIcon>
         <Name>
           {name}
         </Name>

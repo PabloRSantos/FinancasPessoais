@@ -25,54 +25,54 @@ const data = [
       {
         name: 'Lazer',
         global: true,
-        icon: 'icon'
+        icon: '1zXeqnvgl_dWhMiAL2FpAciZi8mz8L3h4'
       },
 
       {
         name: 'Moradia',
         global: true,
-        icon: 'icon'
+        icon: '1uaVVIui6Cey5z39lowSnp3h17-C_XZQQ'
       },
 
       {
         name: 'Supermercado',
         global: true,
-        icon: 'icon'
+        icon: '1gmk7iU4shG0LpVcb7HLcSXsmSmo0htqS'
       },
       {
         name: 'TV',
         global: true,
-        icon: 'icon'
+        icon: '1CoH_W8ZZxJP9gTfp0TPnWib9iJGEad0o'
       },
       {
         name: 'Internet',
         global: true,
-        icon: 'icon'
+        icon: '10oy5w1HlP9lXeFrmKO4PWR13Z3jFAjg_'
       },
       {
         name: 'Telefone',
         global: true,
-        icon: 'icon'
+        icon: '1mTtLSPolg5BaK4CO2DkZ_fqA1jeqVBNt'
       },
       {
         name: 'Transporte',
         global: true,
-        icon: 'icon'
+        icon: '1UWL2wDHBJkPtQ3FVYggb50cdMaOFOIta'
       },
       {
         name: 'Saúde',
         global: true,
-        icon: 'icon'
+        icon: '1c0gUdvIJvzM7SMEI0lynbr6boo4AXSD7'
       },
       {
         name: 'Bares e Restaurantes',
         global: true,
-        icon: 'icon'
+        icon: '1Ld6PDcsP2fRoL_6kboZ8o5cRjYZdujU-'
       },
       {
         name: 'Beleza',
         global: true,
-        icon: 'icon'
+        icon: '10oy5w1HlP9lXeFrmKO4PWR13Z3jFAjg_'
       }
     ]
   }

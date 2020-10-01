@@ -6,6 +6,7 @@ export default {
             categorias {
                 _id
                 name
+                icon
             }
         }
     `

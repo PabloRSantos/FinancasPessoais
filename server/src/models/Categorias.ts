@@ -6,6 +6,7 @@ export interface ICategoria extends Document {
   users: [String],
   name: String,
   global: Boolean,
+  icon: String
 }
 
 const categoriasSchema = new Schema({

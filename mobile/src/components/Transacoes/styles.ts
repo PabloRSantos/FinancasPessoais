@@ -33,14 +33,21 @@ export const LeftSide = styled.View`
     align-items: center;
 `
 
-export const IconCategoria = styled.View`
-    width: 40px;
-    height: 40px;
-    border-radius: 20px;
+export const BgIconCategoria = styled.View`
+     width: 30px;
+    height: 30px;
+    padding: 7px;
+    margin-right: 10px;
     background-color: ${props => props.theme.colors.primary};
+    border-radius: 15px;
 
-    margin-right: 15px;
+`
 
+export const IconCategoria = styled.Image.attrs({
+//   resizeMode: 'contain'
+})`
+   width: 100%;
+   height: 100%;
 `
 
 export const TextCategoria = styled.View`

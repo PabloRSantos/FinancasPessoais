@@ -13,7 +13,7 @@
       "target": "es2017",
      "module": "commonjs",
      "typeRoots": [
-        "./src/customTypes",
+        "src/customTypes",
         "./node_modules/@types"
     ],
   "skipLibCheck": true,

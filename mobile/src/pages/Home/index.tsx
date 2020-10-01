@@ -69,7 +69,7 @@ const Home: React.FC = () => {
 
   const { switchTheme } = useTheme()
 
-  if (error) Alert.alert('Erro ao buscar informações no servidor')
+  if (error) Alert.alert('Erro ao buscar dados no servidor, tente novamente mais tarde')
 
   useFocusEffect(useCallback(() => {
     switchTheme('blue')

@@ -1,4 +1,5 @@
 import styled from 'styled-components/native'
+import { BorderlessButton } from 'react-native-gesture-handler'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
@@ -48,7 +49,7 @@ export const Bottom = styled.View`
     padding: 0 20px;
 `
 
-export const IconContent = styled.View`
+export const IconContent = styled(BorderlessButton)`
     background-color: ${props => props.theme.colors.blue};
 
     width: 50px;

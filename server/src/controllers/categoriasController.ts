@@ -12,6 +12,12 @@ class CategoriasController {
 
       const data = await Categorias.find({ $or: [{ users: userId }, { global: true }] })
 
+      data.forEach(dataItem => {
+        const iconUri = `https://docs.google.com/uc?id=${dataItem.icon}`
+
+        dataItem.icon = iconUri
+      })
+
       return data
     } catch (error) {
       console.log(error)

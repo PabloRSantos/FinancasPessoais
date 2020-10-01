@@ -88,8 +88,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     }
   }
 
-  const SignOut = () => {
-    AsyncStorage.removeItem('@Financas/token')
+  const SignOut = async () => {
+    await AsyncStorage.removeItem('@Financas/token')
+    setSigned(false)
   }
 
   return (

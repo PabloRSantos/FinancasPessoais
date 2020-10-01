@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Alert } from 'react-native'
 
 import { useTransacao } from '../../contexts/transacoes'
 
@@ -25,6 +26,7 @@ const Add: React.FC = () => {
   }
 
   const handleConfirm = async () => {
+    if (title === '') return Alert.alert('O titulo está vazio')
     createTransacao(title, date)
     navigation.navigate('Home')
   }

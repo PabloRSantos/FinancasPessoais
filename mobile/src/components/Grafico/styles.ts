@@ -16,6 +16,14 @@ export const Container = styled.View`
     margin: 10px 0;
 `
 
+export const Title = styled.Text`
+    color: ${props => props.theme.colors.primary};
+    font-size: 16px;
+    font-family: 'Poppins-Bold';
+    text-align: center;
+    margin: 0 auto;
+`
+
 export const Categorias = styled.View`
 
 `

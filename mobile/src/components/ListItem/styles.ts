@@ -26,13 +26,22 @@ export const Item = styled(BorderlessButton)`
 
 `
 
-export const Icon = styled.View`
-    height: 20px;
-    width: 20px;
-    border-radius: 10px;
-    background-color: ${props => props.theme.colors.blue};
+export const BgIcon = styled.View`
+    height: 24px;
+    width: 24px;
+    padding: 5px;
 
+    border-radius: 12px;
     margin-right: 5px;
+
+    background-color: ${props => props.theme.colors.primary};
+`
+
+export const Icon = styled.Image.attrs({
+  resizeMode: 'contain'
+})`
+    width: 100%;
+    height: 100%;
 `
 
 export const Name = styled.Text`

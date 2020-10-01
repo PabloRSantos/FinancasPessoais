@@ -52,6 +52,7 @@ class TransacoesController {
 
     transacoes.forEach(transacao => {
       transacao.date = formatDate(transacao.date)
+      transacao.categoria.icon = `https://docs.google.com/uc?id=${transacao.categoria.icon}`
     })
 
     if (date) {
@@ -91,10 +92,6 @@ class TransacoesController {
         ? user.saldo - NumberValor
         : user.saldo + NumberValor
 
-      console.log(user.saldo)
-
-      await Users.findByIdAndUpdate(userId, { saldo: newBalance })
-
       const docs = new Transacoes({
         user: userId,
         date,
@@ -105,6 +102,8 @@ class TransacoesController {
       })
 
       await docs.save()
+
+      await Users.findByIdAndUpdate(userId, { saldo: newBalance })
 
       return docs
     } catch (error) {
@@ -121,10 +120,28 @@ class TransacoesController {
     return TransacaoUpdate
   }
 
-  async delete (_: any, args: DeleteTransacao) {
-    const TransicaoDelete = await Transacoes.findByIdAndDelete({ _id: args.TransacaoId })
+  async delete (_: any, args: DeleteTransacao, context: MyContext) {
+    try {
+      const userId = context.auth
 
-    return TransicaoDelete
+      const User = await Users.findById(userId)
+
+      if (!User) return 'Erro ao encontrar usuário'
+
+      const TransacaoDelete = await Transacoes.findById(args.TransacaoId)
+
+      if (!TransacaoDelete) return 'Erro ao encontrar Transacao'
+
+      await Transacoes.findByIdAndDelete(args.TransacaoId)
+
+      const NovoSaldo = User.saldo - Number(TransacaoDelete.valor)
+
+      await Users.findByIdAndUpdate(userId, { saldo: NovoSaldo })
+
+      return TransacaoDelete
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

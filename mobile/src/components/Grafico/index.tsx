@@ -4,6 +4,7 @@ import { Categoria, Transacao } from '../../pages/Home'
 
 import {
   Container,
+  Title,
   Categorias,
   Items,
   Icon,
@@ -15,7 +16,7 @@ import {
 } from './styles'
 
 interface GraficoComponentProps {
-  transacoes?: Transacao[]
+  transacoes: Transacao[]
   categorias: Categoria[]
 }
 
@@ -29,11 +30,11 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
   const [datas, setDatas] = useState<Datas[]>([])
 
   useEffect(() => {
-    if (categorias && transacoes) { formatDatas(transacoes, categorias) }
+    if (categorias.length > 0 && transacoes.length > 0) { formatDatas() }
   }, [categorias, transacoes])
 
-  const formatDatas = (transacoes: Transacao[], categorias: Categoria[]) => {
-    const datas: Datas[] = categorias.map(categoria => {
+  const formatDatas = () => {
+    const dataItems: Datas[] = categorias.map(categoria => {
       const valores = transacoes.map(transacao => {
         if (transacao.categoria._id === categoria._id) {
           const valor = transacao.valor.replace(/\D/g, '')
@@ -43,12 +44,12 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
 
       const totalValor = valores.reduce((total = 0, valor) => total + Number(valor))
 
-      const data = { categoria: categoria.name, valor: totalValor || 0, color: randomColor() }
+      const dataItem = { categoria: categoria.name, valor: totalValor || 0, color: randomColor() }
 
-      return data
+      return dataItem
     })
 
-    const datasFiltered = datas.filter(data => data.valor > 0)
+    const datasFiltered = dataItems.filter(data => data.valor !== 0)
 
     setDatas(datasFiltered)
   }
@@ -76,23 +77,32 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
 
   return (
     <Container>
-      <Categorias>
-        <FlatList
-          data={datas}
-          showsVerticalScrollIndicator={false}
-          renderItem={({ item, index }) => renderListItem(item as Datas, index)}
-          keyExtractor={(item: Datas, index) => index.toString()}
-        />
-      </Categorias>
+      {transacoes.length > 0 && categorias.length > 0 ? (
+        <>
+          <Categorias>
+            <FlatList
+              data={datas}
+              showsVerticalScrollIndicator={false}
+              renderItem={({ item, index }) => renderListItem(item as Datas, index)}
+              keyExtractor={(item: Datas, index) => index.toString()}
+            />
+          </Categorias>
 
-      <RightSide>
-        <Grafico data={pieData}/>
-        <SpanButton>
-          <Span>
+          <RightSide>
+            <Grafico data={pieData}/>
+            <SpanButton>
+              <Span>
             Ver mais
-          </Span>
-        </SpanButton>
-      </RightSide>
+              </Span>
+            </SpanButton>
+          </RightSide>
+        </>
+      ) : (
+        <Title>
+          Nenhuma transação foi encontrada
+        </Title>
+      )}
+
     </Container>
   )
 }

@@ -8,7 +8,7 @@ interface ITransacao extends Document {
   user: [IUser],
   valor: String,
   title: String,
-  categorias: ICategoria,
+  categoria: ICategoria,
   date: Date
   isNegative: Boolean
 }

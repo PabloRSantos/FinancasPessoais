@@ -30,9 +30,10 @@ export const TransacaoProvider: React.FC = ({ children }) => {
   }
 
   const createTransacao = async (title: string, date: Date) => {
-    setDatas({ ...datas, title, date })
+    const variablesMutation = { ...datas, title, date }
+    setDatas(variablesMutation)
     await createTransacaoMutation({
-      variables: { data: datas }
+      variables: { data: variablesMutation }
     })
   }
 

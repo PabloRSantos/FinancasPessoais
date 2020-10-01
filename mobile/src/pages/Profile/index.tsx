@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import { Linking, Alert, ActivityIndicator } from 'react-native'
 import CardComponent from '../../components/CardInfos'
 
 import graphql from './graphql'
@@ -6,6 +7,7 @@ import graphql from './graphql'
 import { useQuery } from '@apollo/client'
 
 import { useTheme } from '../../contexts/themes'
+import { useAuth } from '../../contexts/auth/auth'
 
 import {
   Container,
@@ -20,7 +22,6 @@ import {
   ButtonContainer
 } from './styles'
 
-import { ActivityIndicator, Alert } from 'react-native'
 import { User } from '../Home'
 import { useFocusEffect } from '@react-navigation/native'
 import ButtonComponent from '../../components/Button'
@@ -29,6 +30,7 @@ const Profile: React.FC = () => {
   const { data, loading, error } = useQuery(graphql.query)
   const [userInfos, setUserInfos] = useState<User>({} as User)
   const { switchTheme } = useTheme()
+  const { SignOut } = useAuth()
 
   // if (loading) {
   //   return <ActivityIndicator style={{ flex: 1, backgroundColor: '#0098F6' }}/>
@@ -46,6 +48,16 @@ const Profile: React.FC = () => {
     if (data) { setUserInfos(data.user) }
   }, [data])
 
+  const openUrl = async (url: string) => {
+    const supported = await Linking.canOpenURL(url)
+
+    if (supported) {
+      await Linking.openURL(url)
+    } else {
+      Alert.alert('Seu celular não suporta abrir a URL')
+    }
+  }
+
   return (
     <Container>
       <CardContainer>
@@ -54,7 +66,7 @@ const Profile: React.FC = () => {
         </Title>
         <CardComponent label='Nome' icon='user' placeholder='Nome' value={userInfos.name}/>
         <CardComponent label='Email' icon='envelope' placeholder='Email' value={userInfos.email}/>
-        <CardComponent label='Senha' icon='lock' placeholder='Senha' value={userInfos.password}/>
+        <CardComponent label='Senha' icon='lock' placeholder='Senha' value={'*****'}/>
       </CardContainer>
 
       <CardContainer>
@@ -65,15 +77,15 @@ const Profile: React.FC = () => {
         </Top>
 
         <Bottom>
-          <IconContent>
+          <IconContent onPress={() => openUrl('https://github.com/PabloRSantos')}>
             <Icon name='github'/>
           </IconContent>
 
-          <IconContent>
+          <IconContent onPress={() => openUrl('https://www.linkedin.com/in/pablo-rosa-68136a1b2/')}>
             <Icon name='linkedin-square'/>
           </IconContent>
 
-          <IconContent>
+          <IconContent onPress={() => openUrl('https://twitter.com/Pablo_RSantos')}>
             <Icon name='twitter'/>
           </IconContent>
         </Bottom>
@@ -90,7 +102,7 @@ const Profile: React.FC = () => {
       </CardContainer>
 
       <ButtonContainer>
-        <ButtonComponent text='Sair' active={true}/>
+        <ButtonComponent onPress={() => SignOut()} text='Sair' active={true}/>
       </ButtonContainer>
     </Container>
   )

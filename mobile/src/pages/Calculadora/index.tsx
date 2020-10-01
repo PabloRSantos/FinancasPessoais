@@ -61,7 +61,7 @@ const Calculadora: React.FC = () => {
   const eraseValue = () => {
     const result = valueState
       .replace(/\D/g, '')
-      .substring(1)
+      .slice(0, -1)
 
     const resultFormatted = formattedNumber(result)
 
