@@ -26,7 +26,6 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items, title,
   const [itemsState, setItemsState] = useState(items)
   useEffect(() => {
     if (items.length > 0) {
-      console.log(items)
       const itemsFormatted = items.map(item => {
         const dateParts = item.date.toString().split('T').reverse()
 
