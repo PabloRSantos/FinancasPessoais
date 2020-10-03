@@ -9,8 +9,9 @@ import ListItemComponent, { Data } from '../../components/ListItem'
 import { Container, ContentTitle, Title, Lista } from './styles'
 
 import queries from './queries'
-import { Alert, ActivityIndicator } from 'react-native'
+import { Alert } from 'react-native'
 import FooterConfirm from '../../components/FooterConfirm'
+import ShimmerCategorias from '../../components/ShimmerEffects/Categorias'
 
 const Categorias: React.FC = () => {
   const [categorias, setCategoria] = useState<string[]>([])
@@ -71,15 +72,15 @@ const Categorias: React.FC = () => {
           </Title>
         </ContentTitle>
 
-        {loading ? (
-          <ActivityIndicator style={{ flex: 1, backgroundColor: '#0098F6' }}/>
-        ) : (
+        {!loading ? (
           <Lista
             data={data.categorias}
             showsVerticalScrollIndicator={false}
             renderItem={({ item, index }) => renderListItem(item as Data)}
             keyExtractor={(item, index) => index.toString()}
           />
+        ) : (
+          <ShimmerCategorias />
         )}
 
       </Container>

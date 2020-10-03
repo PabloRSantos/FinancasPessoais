@@ -5,10 +5,6 @@ import { Picker } from '@react-native-community/picker'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
-// interface CalendarFilter {
-//     onPressCalendar: () => void
-// }
-
 export const Container = styled.View`
     height: 150px;
     background-color: ${props => props.theme.colors.primary};

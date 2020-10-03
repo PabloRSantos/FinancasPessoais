@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Linking, Alert, ActivityIndicator } from 'react-native'
+import { Linking, Alert } from 'react-native'
 import CardComponent from '../../components/CardInfos'
 
 import graphql from './graphql'
@@ -25,16 +25,13 @@ import {
 import { User } from '../Home'
 import { useFocusEffect } from '@react-navigation/native'
 import ButtonComponent from '../../components/Button'
+import ShimmerProfile from '../../components/ShimmerEffects/Profile'
 
 const Profile: React.FC = () => {
   const { data, loading, error } = useQuery(graphql.query)
   const [userInfos, setUserInfos] = useState<User>({} as User)
   const { switchTheme } = useTheme()
   const { SignOut } = useAuth()
-
-  // if (loading) {
-  //   return <ActivityIndicator style={{ flex: 1, backgroundColor: '#0098F6' }}/>
-  // }
 
   if (error) {
     Alert.alert('Houve um erro ao carregar seus dados, tente novamente')
@@ -64,9 +61,20 @@ const Profile: React.FC = () => {
         <Title>
           Perfil
         </Title>
-        <CardComponent label='Nome' icon='user' placeholder='Nome' value={userInfos.name}/>
-        <CardComponent label='Email' icon='envelope' placeholder='Email' value={userInfos.email}/>
-        <CardComponent label='Senha' icon='lock' placeholder='Senha' value={'*****'}/>
+        {!loading ? (
+          <>
+            <CardComponent label='Nome' icon='user' placeholder='Nome' value={userInfos.name}/>
+            <CardComponent label='Email' icon='envelope' placeholder='Email' value={userInfos.email}/>
+            <CardComponent label='Senha' icon='lock' placeholder='Senha' value={'*****'}/>
+          </>
+        ) : (
+          <>
+            <ShimmerProfile />
+            <ShimmerProfile />
+            <ShimmerProfile />
+          </>
+        )}
+
       </CardContainer>
 
       <CardContainer>

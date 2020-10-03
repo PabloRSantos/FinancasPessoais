@@ -43,9 +43,7 @@ export const BgIconCategoria = styled.View`
 
 `
 
-export const IconCategoria = styled.Image.attrs({
-//   resizeMode: 'contain'
-})`
+export const IconCategoria = styled.Image`
    width: 100%;
    height: 100%;
 `

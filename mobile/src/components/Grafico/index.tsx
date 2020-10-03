@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
 import { Categoria, Transacao } from '../../pages/Home'
+import ShimmerGrafico from '../ShimmerEffects/Grafico'
 
 import {
   Container,
-  Title,
   Categorias,
   Items,
   Icon,
@@ -18,6 +18,7 @@ import {
 interface GraficoComponentProps {
   transacoes: Transacao[]
   categorias: Categoria[]
+  isLoading: boolean
 }
 
 interface Datas {
@@ -26,7 +27,7 @@ interface Datas {
   color: string
 }
 
-const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transacoes }) => {
+const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transacoes, isLoading }) => {
   const [datas, setDatas] = useState<Datas[]>([])
 
   useEffect(() => {
@@ -75,9 +76,17 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
     </Items>
   )
 
+  if (!isLoading && transacoes.length === 0) {
+    return (
+      <Name>
+        Nenhum item encontrado
+      </Name>
+    )
+  }
+
   return (
     <Container>
-      {transacoes.length > 0 && categorias.length > 0 ? (
+      {!isLoading ? (
         <>
           <Categorias>
             <FlatList
@@ -92,15 +101,13 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
             <Grafico data={pieData}/>
             <SpanButton>
               <Span>
-            Ver mais
+              Ver mais
               </Span>
             </SpanButton>
           </RightSide>
         </>
       ) : (
-        <Title>
-          Nenhuma transação foi encontrada
-        </Title>
+        <ShimmerGrafico />
       )}
 
     </Container>

@@ -19,6 +19,7 @@ import {
 } from './styles'
 
 import { User } from '../../pages/Home'
+import ShimmerHeader from '../ShimmerEffects/Header'
 
 interface HeaderComponentProps {
   onPressCalendar: () => void
@@ -26,9 +27,17 @@ interface HeaderComponentProps {
   onChangeSelect: (item: string) => void
   user: User
   selectInitial: string
+  isLoading: boolean
 }
 
-const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, onPressFilter, user, onChangeSelect, selectInitial }) => {
+const HeaderComponent: React.FC<HeaderComponentProps> = ({
+  onPressCalendar,
+  onPressFilter,
+  user,
+  onChangeSelect,
+  selectInitial,
+  isLoading
+}) => {
   const [selectedState, setSelectedState] = useState(selectInitial)
   const [saldoUser, setSaldoUser] = useState('0,00')
   const { switchTheme } = useTheme()
@@ -89,14 +98,19 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({ onPressCalendar, onPr
 
       <ValueContent>
         <Label>
-          Saldo disponivel
+              Saldo disponivel
         </Label>
+        {!isLoading ? (
+          <Value>
+            R${saldoUser}
+          </Value>
+        ) : (
+          <ShimmerHeader />
+        )}
 
-        <Value>
-          R${saldoUser}
-        </Value>
       </ValueContent>
     </Container>
+
   )
 }
 

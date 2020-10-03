@@ -43,12 +43,18 @@ export const Name = styled.Text`
     font-family: 'Poppins-Bold';
 `
 
-export const BigIcon = styled.View`
+export const BigIconContainer = styled.View`
     width: 60px;
     height: 60px;
     border-radius: 30px;
     background-color: ${props => props.theme.colors.primary};
     margin-bottom: 5px;
+    padding: 12px;
+`
+
+export const BigIcon = styled.Image`
+    width:  100%;
+    height: 100%;
 `
 
 export const Icon = styled.View`

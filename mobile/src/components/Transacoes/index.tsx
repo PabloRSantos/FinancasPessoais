@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Transacao } from '../../pages/Home'
-// import Icons from '../../../assets/svgs/icons'
+import ShimmerTransacoes from '../ShimmerEffects/Transacoes'
 
 import {
   Container,
@@ -19,10 +19,16 @@ import {
 interface TransacoesComponentProps {
   items: Transacao[]
   title: string
+  isLoading: boolean
   showDetailTransaction: (item: Transacao) => void
 }
 
-const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items, title, showDetailTransaction }) => {
+const TransacoesComponent: React.FC<TransacoesComponentProps> = ({
+  items,
+  title,
+  isLoading,
+  showDetailTransaction
+}) => {
   const [itemsState, setItemsState] = useState(items)
   useEffect(() => {
     if (items.length > 0) {
@@ -42,7 +48,7 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items, title,
     }
   }, [items])
 
-  if (!itemsState) {
+  if (items.length === 0 && !isLoading) {
     return (
       <Name>Nenhum item encontrado</Name>
     )
@@ -50,11 +56,11 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items, title,
 
   return (
     <Container>
-      {items.length > 0 ? (
+      <Title>
+        {title}
+      </Title>
+      {!isLoading ? (
         <>
-          <Title>
-            {title}
-          </Title>
           {itemsState.map(item => (
             <Item key={item._id} onPress={() => showDetailTransaction(item)}>
               <LeftSide>
@@ -73,16 +79,20 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({ items, title,
 
               <RightSide>
                 <Value isNegative={item.isNegative}>
-              R${item.valor}
+                R${item.valor}
                 </Value>
               </RightSide>
+
             </Item>
           ))}
         </>
       ) : (
-        <Title>
-          Nenhuma transação foi encontrada
-        </Title>
+        <>
+          <ShimmerTransacoes/>
+          <ShimmerTransacoes/>
+          <ShimmerTransacoes/>
+          <ShimmerTransacoes/>
+        </>
       )}
 
     </Container>

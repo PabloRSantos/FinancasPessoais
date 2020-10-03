@@ -9,7 +9,7 @@ import FilterModal from '../../components/Modal'
 import TransacoesComponent from '../../components/Transacoes'
 import GraficosComponent from '../../components/Grafico'
 
-import { Container, ShimmerEffect } from './styles'
+import { Container } from './styles'
 import CalendarComponent from '../../components/Calendar'
 
 import queries from './queries'
@@ -63,7 +63,6 @@ const Home: React.FC = () => {
   const [totalTransactions, setTotalTransactions] = useState<Transacao[]>([])
   const [categorias, setCategorias] = useState<Categoria[]>([])
   const [user, setUser] = useState<User>({} as User)
-  const [shimmerVisible, setShimmerVisible] = useState(false)
   const [filters, setFilters] = useState<Filters>({})
 
   const [runQuery, { data, error, loading }] = useLazyQuery(queries.query,
@@ -73,8 +72,6 @@ const Home: React.FC = () => {
 
   if (error) Alert.alert('Erro ao buscar dados no servidor, tente novamente mais tarde')
 
-  if (loading) setShimmerVisible(true)
-
   useFocusEffect(useCallback(() => {
     switchTheme('blue')
     onChangeSelect('Saldo')
@@ -82,12 +79,13 @@ const Home: React.FC = () => {
 
   useFocusEffect(useCallback(() => {
     if (!data) return
+    setTimeout(() => {
+      if (data.user) { setUser(data.user) }
 
-    if (data.user) { setUser(data.user) }
+      if (data.transacoes) { ChangeTransactions(data.transacoes as Transacao[]) }
 
-    if (data.transacoes) { ChangeTransactions(data.transacoes as Transacao[]) }
-
-    setCategorias(data.categorias)
+      setCategorias(data.categorias)
+    }, 2000)
   }, [data]))
 
   const ChangeTransactions = (transacoes: Transacao[]) => {
@@ -142,36 +140,35 @@ const Home: React.FC = () => {
     {
       key: 'Transacoes Futuras',
       render: () =>
-        <ShimmerEffect visible={shimmerVisible} stopAutoRun>
-          <TransacoesComponent
-            showDetailTransaction={(item) => showDetailTransaction(item)}
-            title='Futuras Transações'
-            items={futureTransactions}/>
-        </ShimmerEffect>
+        <TransacoesComponent
+          showDetailTransaction={(item) => showDetailTransaction(item)}
+          title='Futuras Transações'
+          items={futureTransactions}
+          isLoading={loading}/>
 
     },
     {
       key: 'Graficos',
       render: () =>
-        <ShimmerEffect visible={shimmerVisible}>
-          <GraficosComponent transacoes={totalTransactions} categorias={categorias}/>
-        </ShimmerEffect>
+        <GraficosComponent transacoes={totalTransactions}
+          categorias={categorias}
+          isLoading={loading}/>
     },
     {
       key: 'Transacoes',
       render: () =>
-        <ShimmerEffect visible={shimmerVisible}>
-          <TransacoesComponent
-            showDetailTransaction={(item) => showDetailTransaction(item)}
-            title='Transações Finalizadas'
-            items={completedTransactions}/>
-        </ShimmerEffect>
+        <TransacoesComponent
+          showDetailTransaction={(item) => showDetailTransaction(item)}
+          title='Transações Finalizadas'
+          items={completedTransactions}
+          isLoading={loading}/>
     }
   ]
 
   return (
     <Container>
       <HeaderComponent
+        isLoading={loading}
         user={user}
         selectInitial={select}
         onChangeSelect={item => onChangeSelect(item)}

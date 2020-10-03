@@ -12,6 +12,7 @@ import {
   Top,
   Bottom,
   Name,
+  BigIconContainer,
   BigIcon,
   Icon,
   Valor,
@@ -44,7 +45,9 @@ const TransacaoDetail: React.FC<TransacaoDetailProps> = ({ dataModal, handleModa
       <Background onPress={() => handleModal(false)}/>
       <Modal>
         <Top>
-          <BigIcon />
+          <BigIconContainer>
+            <BigIcon source={{ uri: dataModal.categoria.icon }}/>
+          </BigIconContainer>
           <Name>
             {dataModal.title}
           </Name>
