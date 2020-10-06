@@ -9,6 +9,8 @@ import {
   Container,
   Background,
   Modal,
+  CloseButton,
+  CloseIcon,
   Top,
   Bottom,
   Name,
@@ -42,8 +44,12 @@ const TransacaoDetail: React.FC<TransacaoDetailProps> = ({ dataModal, handleModa
 
   return (
     <Container>
+
       <Background onPress={() => handleModal(false)}/>
       <Modal>
+        <CloseButton onPress={() => handleModal(false)}>
+          <CloseIcon />
+        </CloseButton>
         <Top>
           <BigIconContainer>
             <BigIcon source={{ uri: dataModal.categoria.icon }}/>
@@ -82,14 +88,14 @@ const TransacaoDetail: React.FC<TransacaoDetailProps> = ({ dataModal, handleModa
 
           <Right>
             <ActionContainer>
-              <Icon />
+              <Icon name='edit'/>
               <Info>
               Editar
               </Info>
             </ActionContainer>
 
             <ActionContainer onPress={() => removeItem(dataModal._id)}>
-              <Icon />
+              <Icon name='trash-o'/>
               <Info>
               Remover
               </Info>

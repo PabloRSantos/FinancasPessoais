@@ -51,6 +51,7 @@ class TransacoesController {
       .populate(['categoria', 'user'])
 
     transacoes.forEach(transacao => {
+      console.log(transacao.title)
       transacao.date = formatDate(transacao.date)
       transacao.categoria.icon = `https://docs.google.com/uc?id=${transacao.categoria.icon}`
     })
@@ -128,17 +129,23 @@ class TransacoesController {
 
       if (!User) return 'Erro ao encontrar usuário'
 
-      const TransacaoDelete = await Transacoes.findById(args.TransacaoId)
+      const DeletedTransaction = await Transacoes.findById(args.TransacaoId)
 
-      if (!TransacaoDelete) return 'Erro ao encontrar Transacao'
+      if (!DeletedTransaction) return 'Erro ao encontrar Transacao'
 
       await Transacoes.findByIdAndDelete(args.TransacaoId)
 
-      const NovoSaldo = User.saldo - Number(TransacaoDelete.valor)
+      let deletedTransactionValue = Number(DeletedTransaction.valor.replace(/\D/g, ''))
+
+      if (DeletedTransaction.isNegative) deletedTransactionValue = -deletedTransactionValue
+
+      console.log(deletedTransactionValue)
+
+      const NovoSaldo = User.saldo - deletedTransactionValue
 
       await Users.findByIdAndUpdate(userId, { saldo: NovoSaldo })
 
-      return TransacaoDelete
+      return DeletedTransaction
     } catch (error) {
       console.log(error)
     }

@@ -98,7 +98,7 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
           </Categorias>
 
           <RightSide>
-            <Grafico data={pieData}/>
+            <Grafico animate data={pieData} padAngle={0}/>
             <SpanButton>
               <Span>
               Ver mais

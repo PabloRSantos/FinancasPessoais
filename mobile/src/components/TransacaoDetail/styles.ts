@@ -1,6 +1,9 @@
 import styled from 'styled-components/native'
 import { BorderlessButton } from 'react-native-gesture-handler'
 
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+
 import { Dimensions } from 'react-native'
 
 const { height, width } = Dimensions.get('window')
@@ -31,7 +34,23 @@ export const Modal = styled.View`
 
     align-items: center;
     padding: 24px;
+
+    position: relative;
 `
+
+export const CloseButton = styled(BorderlessButton)`
+    position: absolute;
+    top: 20px;
+    right: 20px;
+`
+
+export const CloseIcon = styled(AntDesign).attrs({
+  name: 'closecircleo',
+  size: 23
+})`
+    color: red;
+    opacity: 0.7;
+  `
 
 export const Top = styled.View`
     align-items: center;
@@ -57,12 +76,11 @@ export const BigIcon = styled.Image`
     height: 100%;
 `
 
-export const Icon = styled.View`
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    background-color: ${props => props.theme.colors.primary};
+export const Icon = styled(FontAwesome).attrs({
+  size: 25
+})`
     margin-right: 5px;
+    color: ${props => props.theme.colors.primary};
 `
 
 export const Valor = styled.Text`

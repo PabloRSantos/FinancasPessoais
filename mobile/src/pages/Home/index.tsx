@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Alert, FlatList } from 'react-native'
 
 import { useTheme } from '../../contexts/themes'
@@ -13,7 +13,7 @@ import { Container } from './styles'
 import CalendarComponent from '../../components/Calendar'
 
 import queries from './queries'
-import { useLazyQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { useFocusEffect } from '@react-navigation/native'
 
 interface Item {
@@ -65,7 +65,7 @@ const Home: React.FC = () => {
   const [user, setUser] = useState<User>({} as User)
   const [filters, setFilters] = useState<Filters>({})
 
-  const [runQuery, { data, error, loading }] = useLazyQuery(queries.query,
+  const { data, error, loading, fetchMore } = useQuery(queries.query,
     { variables: { filters } })
 
   const { switchTheme } = useTheme()
@@ -77,16 +77,20 @@ const Home: React.FC = () => {
     onChangeSelect('Saldo')
   }, []))
 
-  useFocusEffect(useCallback(() => {
-    if (!data) return
-    setTimeout(() => {
-      if (data.user) { setUser(data.user) }
+  useEffect(() => {
+    if (!data || data.transacoes === totalTransactions) return
 
-      if (data.transacoes) { ChangeTransactions(data.transacoes as Transacao[]) }
+    if (data.user) { setUser(data.user) }
 
-      setCategorias(data.categorias)
-    }, 2000)
-  }, [data]))
+    if (data.transacoes) { ChangeTransactions(data.transacoes as Transacao[]) }
+
+    setCategorias(data.categorias)
+  }, [data])
+
+  const fetchDatas = () => {
+    if (!fetchMore) return
+    fetchMore({ variables: { filters } })
+  }
 
   const ChangeTransactions = (transacoes: Transacao[]) => {
     const TransacoesFuturas = transacoes
@@ -100,11 +104,9 @@ const Home: React.FC = () => {
     const TransacoesCompletadas = transacoes
       .filter((transacao: Transacao) => !TransacoesFuturas.includes(transacao) && transacao)
 
-    const TransacoesTotal = transacoes
-
-    setFutureTransactions(TransacoesFuturas)
-    setCompletedTransactions(TransacoesCompletadas)
-    setTotalTransactions(TransacoesTotal)
+    setTotalTransactions(transacoes)
+    TransacoesFuturas.length > 0 ? setFutureTransactions(TransacoesFuturas) : setFutureTransactions([])
+    TransacoesCompletadas.length > 0 ? setCompletedTransactions(TransacoesCompletadas) : setCompletedTransactions([])
   }
 
   const onChangeSelect = (item: string) => {
@@ -114,8 +116,6 @@ const Home: React.FC = () => {
       const FiltersObject: Filters = filters
 
       delete FiltersObject.isNegative
-
-      runQuery()
 
       return setFilters(FiltersObject)
     }
@@ -188,11 +188,13 @@ const Home: React.FC = () => {
         dataModal={dataModal}
         handleModal={(action: boolean) => {
           setShowDetailModal(false)
-          action && runQuery()
+          action && fetchDatas()
         }}/>}
 
       <FlatList
-        data= {dataItems}
+        onRefresh={fetchDatas}
+        refreshing={false}
+        data={dataItems}
         renderItem={({ item }) => item.render()}
         keyExtractor={item => item.key}
       />

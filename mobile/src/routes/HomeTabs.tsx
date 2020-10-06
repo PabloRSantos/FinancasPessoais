@@ -68,7 +68,7 @@ function HomeTabs () {
             <FontAwesome
               style={{ marginTop: 10 }}
               name="plus-circle"
-              size={50}
+              size={45}
               color={focused ? color : '#C6C4C4'}
             />
         }}

@@ -31,28 +31,22 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({
 }) => {
   const [itemsState, setItemsState] = useState(items)
   useEffect(() => {
-    if (items.length > 0) {
-      const itemsFormatted = items.map(item => {
-        const dateParts = item.date.toString().split('T').reverse()
+    if (items.length === 0) return setItemsState([])
 
-        const date = dateParts[1]
-          .split('-')
-          .reverse()
-          .join('-')
-          .replace(/-/g, '/')
+    const itemsFormatted = items.map(item => {
+      const dateParts = item.date.toString().split('T').reverse()
 
-        return { ...item, date }
-      })
+      const date = dateParts[1]
+        .split('-')
+        .reverse()
+        .join('-')
+        .replace(/-/g, '/')
 
-      setItemsState(itemsFormatted as Transacao[])
-    }
+      return { ...item, date }
+    })
+
+    setItemsState(itemsFormatted as Transacao[])
   }, [items])
-
-  if (items.length === 0 && !isLoading) {
-    return (
-      <Name>Nenhum item encontrado</Name>
-    )
-  }
 
   return (
     <Container>
