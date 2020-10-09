@@ -2,6 +2,7 @@ import Transacoes from '@models/Transacoes'
 import Users from '@models/Users'
 import { MyContext } from 'src/server'
 import formatDate from 'src/util/formattedDate'
+import { IpageDatas } from './categoriasController'
 
 interface CreateTransacao {
   transacao: {
@@ -23,6 +24,8 @@ interface GetTransacoesFilters {
       date?: String,
       future?: Boolean,
       user: String
+      page: number
+      sort: string
     }
 }
 
@@ -44,14 +47,18 @@ class TransacoesController {
 
   async index (_: any, args: GetTransacoesFilters, context: MyContext) {
     const userId = context.auth
-    const { future, date, ...rest } = args.Filters
+    const { future, date, page, sort, ...rest } = args.Filters
     rest.user = userId.toString()
+    const pageDatas: IpageDatas = {} as IpageDatas
+
+    const skip = (page || 1 - 1) * 10
+
+    const sortBy = sort || 'date'
 
     let transacoes = await Transacoes.find(rest as any)
-      .populate(['categoria', 'user'])
+      .populate(['categoria', 'user']).limit(10).skip(skip).sort({ [sortBy]: -1 })
 
     transacoes.forEach(transacao => {
-      console.log(transacao.title)
       transacao.date = formatDate(transacao.date)
       transacao.categoria.icon = `https://docs.google.com/uc?id=${transacao.categoria.icon}`
     })
@@ -64,7 +71,10 @@ class TransacoesController {
       })
     }
 
-    return transacoes
+    pageDatas.pageTotal = await Transacoes.count(rest as any)
+    pageDatas.pageAtual = page
+
+    return { transacoes, pageDatas }
   }
 
   async create (_: any, args: CreateTransacao, context: MyContext) {

@@ -25,7 +25,9 @@ type Transacao {
 input Filters {
   isNegative: Boolean,
   date: Date,
-  future: Boolean
+  future: Boolean,
+  page: Int,
+  sortBy: String
 }
 
 input createUserInput {
@@ -50,14 +52,29 @@ type Categoria {
   icon: String
 }
 
+type pageDatas {
+    pageAtual: Int,
+    pageTotal: Int
+}
+
+type getTransacoes {
+  transacoes: [Transacao]
+  pageDatas: pageDatas
+}
+
+type getCategorias {
+  categorias: [Categoria]
+  pageDatas: pageDatas
+}
+
 type Token {
   token: String
 }
 
 type Query {
     user: User,
-    categorias: [Categoria],
-    transacoes(Filters: Filters): [Transacao],
+    categorias: getCategorias,
+    transacoes(Filters: Filters): getTransacoes,
     transacao(TransacaoId: String): Transacao
 }
 
