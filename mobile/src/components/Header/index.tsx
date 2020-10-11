@@ -40,6 +40,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
 }) => {
   const [selectedState, setSelectedState] = useState(selectInitial)
   const [saldoUser, setSaldoUser] = useState('0,00')
+  const [balanceType, setBalanceType] = useState('Saldo disponivel')
   const { switchTheme } = useTheme()
 
   useEffect(() => {
@@ -47,7 +48,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
   }, [selectInitial])
 
   useEffect(() => {
-    if (!user.saldo) return
+    if (!user.saldo) return setSaldoUser('0,00')
     const saldoFormatted = formatToReal(user.saldo.toString())
 
     setSaldoUser(saldoFormatted)
@@ -59,12 +60,15 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
     switch (item) {
       case 'Depósitos':
         switchTheme('green')
+        setBalanceType('Depósitos')
         break
       case 'Retiradas':
         switchTheme('red')
+        setBalanceType('Retiradas')
         break
       case 'Saldo':
         switchTheme('blue')
+        setBalanceType('Saldo disponivel')
         break
     }
 
@@ -98,7 +102,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
 
       <ValueContent>
         <Label>
-              Saldo disponivel
+          {balanceType}
         </Label>
         {!isLoading ? (
           <Value>

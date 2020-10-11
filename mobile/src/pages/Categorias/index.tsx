@@ -12,11 +12,14 @@ import queries from './queries'
 import { Alert } from 'react-native'
 import FooterConfirm from '../../components/FooterConfirm'
 import ShimmerCategorias from '../../components/ShimmerEffects/Categorias'
+import { GetCategoria } from '../Home'
 
 const Categorias: React.FC = () => {
-  const [categorias, setCategoria] = useState<string[]>([])
+  const [categoriasSelected, setCategoriasSelected] = useState<string[]>([])
   const [footerVisible, setFooterVisible] = useState(false)
-  const { data, loading, error } = useQuery(queries.getCategorias)
+  const [dataCategorias, setDataCategorias] = useState<GetCategoria>({} as GetCategoria)
+  const [page, setPage] = useState(1)
+  const { data, error } = useQuery(queries.getCategorias, { variables: { page } })
   const { changeState } = useTransacao()
   const { switchTheme } = useTheme()
   const navigation = useNavigation()
@@ -26,32 +29,48 @@ const Categorias: React.FC = () => {
   }
 
   useEffect(() => {
-    switchTheme('green')
+    switchTheme('blue')
   }, [])
 
+  useEffect(() => {
+    if (!data) return
+
+    if (!dataCategorias.categorias) {
+      return setDataCategorias(data.getCategorias)
+    }
+    const totalCategorias = dataCategorias.categorias.concat(data.getCategorias.categorias)
+    setDataCategorias({ pageDatas: data.getCategorias.pageDatas, categorias: totalCategorias })
+  }, [data])
+
   const handleCategoria = (categoriaId: string) => {
-    if (categorias.length === 0) {
-      setCategoria([categoriaId])
+    if (categoriasSelected.length === 0) {
+      setCategoriasSelected([categoriaId])
       setFooterVisible(true)
       return
     }
 
-    const categoriasFiltered = categorias.filter(categoria => categoria !== categoriaId)
+    const categoriasFiltered = categoriasSelected.filter(categoria => categoria !== categoriaId)
 
-    if (categoriasFiltered.length === categorias.length) {
-      setCategoria([...categorias, categoriaId])
+    if (categoriasFiltered.length === categoriasSelected.length) {
+      setCategoriasSelected([...categoriasSelected, categoriaId])
     } else {
-      setCategoria(categoriasFiltered)
+      setCategoriasSelected(categoriasFiltered)
 
       categoriasFiltered.length === 0 && setFooterVisible(false)
     }
   }
 
   const handleConfirm = () => {
-    if (categorias.length === 0) return Alert.alert('Selecione alguma categoria')
-    if (categorias.length > 1) return Alert.alert('Selecione somente uma categoria')
-    changeState({ categoria: categorias[0] })
+    if (categoriasSelected.length === 0) return Alert.alert('Selecione alguma categoria')
+    if (categoriasSelected.length > 1) return Alert.alert('Selecione somente uma categoria')
+    changeState({ categoria: categoriasSelected[0] })
     navigation.navigate('Add')
+  }
+
+  const handlePage = () => {
+    const { pageTotal, pageAtual } = dataCategorias.pageDatas
+
+    if (pageAtual < pageTotal) setPage(pageAtual + 1)
   }
 
   const renderListItem = (item: Data) => (
@@ -72,12 +91,14 @@ const Categorias: React.FC = () => {
           </Title>
         </ContentTitle>
 
-        {!loading ? (
+        {dataCategorias.categorias ? (
           <Lista
-            data={data.categorias}
+            data={dataCategorias.categorias}
             showsVerticalScrollIndicator={false}
             renderItem={({ item, index }) => renderListItem(item as Data)}
             keyExtractor={(item, index) => index.toString()}
+            onEndReached={handlePage}
+            onEndReachedThreshold={0.1}
           />
         ) : (
           <ShimmerCategorias />

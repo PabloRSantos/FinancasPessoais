@@ -3,10 +3,10 @@ import { gql } from '@apollo/client'
 export default {
   query: gql`
         query {
-            user {
+            getUser {
                 name,
                 email,
-                password
+                saldo
             }
         }
     `

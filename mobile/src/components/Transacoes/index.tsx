@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Transacao } from '../../pages/Home'
+import { GetTransacao, Transacao } from '../../pages/Home'
 import ShimmerTransacoes from '../ShimmerEffects/Transacoes'
 
 import {
@@ -17,7 +17,7 @@ import {
 } from './styles'
 
 interface TransacoesComponentProps {
-  items: Transacao[]
+  items: GetTransacao
   title: string
   isLoading: boolean
   showDetailTransaction: (item: Transacao) => void
@@ -31,31 +31,42 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({
 }) => {
   const [itemsState, setItemsState] = useState(items)
   useEffect(() => {
-    if (items.length === 0) return setItemsState([])
+    if (!items.transacoes) return
 
-    const itemsFormatted = items.map(item => {
+    const itemsFormatted: Transacao[] = items.transacoes.map(item => {
       const dateParts = item.date.toString().split('T').reverse()
 
-      const date = dateParts[1]
+      const dateReverse = dateParts[1]
         .split('-')
         .reverse()
         .join('-')
         .replace(/-/g, '/')
 
-      return { ...item, date }
+      return { ...item, date: dateReverse }
     })
 
-    setItemsState(itemsFormatted as Transacao[])
+    setItemsState({ ...items, transacoes: itemsFormatted })
   }, [items])
+
+  if (isLoading) {
+    return (
+      <Container>
+        <ShimmerTransacoes/>
+        <ShimmerTransacoes/>
+        <ShimmerTransacoes/>
+        <ShimmerTransacoes/>
+      </Container>
+    )
+  }
 
   return (
     <Container>
       <Title>
         {title}
       </Title>
-      {!isLoading ? (
+      {itemsState.transacoes ? (
         <>
-          {itemsState.map(item => (
+          {itemsState.transacoes.map(item => (
             <Item key={item._id} onPress={() => showDetailTransaction(item)}>
               <LeftSide>
                 <BgIconCategoria>
@@ -81,12 +92,9 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({
           ))}
         </>
       ) : (
-        <>
-          <ShimmerTransacoes/>
-          <ShimmerTransacoes/>
-          <ShimmerTransacoes/>
-          <ShimmerTransacoes/>
-        </>
+        <Name>
+          Nenhum item encontrado
+        </Name>
       )}
 
     </Container>

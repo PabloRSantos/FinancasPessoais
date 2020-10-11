@@ -42,7 +42,7 @@ const Profile: React.FC = () => {
   }, []))
 
   useEffect(() => {
-    if (data) { setUserInfos(data.user) }
+    if (data) { setUserInfos(data.getUser) }
   }, [data])
 
   const openUrl = async (url: string) => {

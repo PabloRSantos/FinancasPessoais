@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
-import { Categoria, Transacao } from '../../pages/Home'
+import { GetCategoria, GetTransacao } from '../../pages/Home'
 import ShimmerGrafico from '../ShimmerEffects/Grafico'
 
 import {
@@ -16,8 +16,8 @@ import {
 } from './styles'
 
 interface GraficoComponentProps {
-  transacoes: Transacao[]
-  categorias: Categoria[]
+  transacoes: GetTransacao
+  categorias: GetCategoria
   isLoading: boolean
 }
 
@@ -31,12 +31,14 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
   const [datas, setDatas] = useState<Datas[]>([])
 
   useEffect(() => {
-    if (categorias.length > 0 && transacoes.length > 0) { formatDatas() }
+    transacoes.transacoes && transacoes.transacoes.length > 0
+      ? formatDatas()
+      : setDatas([])
   }, [categorias, transacoes])
 
   const formatDatas = () => {
-    const dataItems: Datas[] = categorias.map(categoria => {
-      const valores = transacoes.map(transacao => {
+    const dataItems: Datas[] = categorias.categorias.map(categoria => {
+      const valores = transacoes.transacoes.map(transacao => {
         if (transacao.categoria._id === categoria._id) {
           const valor = transacao.valor.replace(/\D/g, '')
           return Number(valor)
@@ -76,17 +78,17 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
     </Items>
   )
 
-  if (!isLoading && transacoes.length === 0) {
+  if (isLoading) {
     return (
-      <Name>
-        Nenhum item encontrado
-      </Name>
+      <Container>
+        <ShimmerGrafico />
+      </Container>
     )
   }
 
   return (
     <Container>
-      {!isLoading ? (
+      {datas.length > 0 ? (
         <>
           <Categorias>
             <FlatList
@@ -107,7 +109,9 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
           </RightSide>
         </>
       ) : (
-        <ShimmerGrafico />
+        <Name>
+          Nenhum item encontrado
+        </Name>
       )}
 
     </Container>

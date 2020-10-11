@@ -22,6 +22,11 @@ interface Item {
   render: () => JSX.Element;
 }
 
+export interface GetTransacao {
+  transacoes: Transacao[]
+  pageDatas: PageDatas
+}
+
 export interface Transacao {
   _id: string,
   categoria: Categoria,
@@ -31,11 +36,21 @@ export interface Transacao {
   isNegative: Boolean
 }
 
+interface PageDatas {
+  pageAtual: number,
+  pageTotal: number
+}
+
 export interface Categoria {
   _id: string,
   icon: string,
   name: string
 }
+
+export interface GetCategoria {
+  categorias: Categoria[]
+  pageDatas: PageDatas
+ }
 
 export interface User {
   _id: string,
@@ -46,6 +61,7 @@ export interface User {
 }
 
 interface Filters {
+  page: number,
   isNegative?: boolean,
   date?: Date,
   future?: boolean
@@ -58,15 +74,17 @@ const Home: React.FC = () => {
   const [showCalendar, setShowCalendar] = useState(false)
   const [date, setDate] = useState(new Date())
   const [select, setSelect] = useState('')
-  const [completedTransactions, setCompletedTransactions] = useState<Transacao[]>([])
-  const [futureTransactions, setFutureTransactions] = useState<Transacao[]>([])
-  const [totalTransactions, setTotalTransactions] = useState<Transacao[]>([])
-  const [categorias, setCategorias] = useState<Categoria[]>([])
+  const [completedTransactions, setCompletedTransactions] = useState<GetTransacao>({} as GetTransacao)
+  const [futureTransactions, setFutureTransactions] = useState<GetTransacao>({} as GetTransacao)
+  const [totalTransactions, setTotalTransactions] = useState<GetTransacao>({} as GetTransacao)
+  const [categorias, setCategorias] = useState<GetCategoria>({} as GetCategoria)
+  const [categoriasPage, setCategoriasPage] = useState(1)
+  const [userSaldoNegative, setUserSaldoNegative] = useState<Boolean | undefined>()
   const [user, setUser] = useState<User>({} as User)
-  const [filters, setFilters] = useState<Filters>({})
+  const [filters, setFilters] = useState<Filters>({ page: 1 })
 
   const { data, error, loading, fetchMore } = useQuery(queries.query,
-    { variables: { filters } })
+    { variables: { filters, categoriasPage, isNegative: userSaldoNegative } })
 
   const { switchTheme } = useTheme()
 
@@ -78,35 +96,20 @@ const Home: React.FC = () => {
   }, []))
 
   useEffect(() => {
-    if (!data || data.transacoes === totalTransactions) return
+    if (!data) return
 
-    if (data.user) { setUser(data.user) }
+    data.getUser && setUser(data.getUser)
 
-    if (data.transacoes) { ChangeTransactions(data.transacoes as Transacao[]) }
+    data.getCategorias && setCategorias(data.getCategorias)
 
-    setCategorias(data.categorias)
+    data.getTotalTransacoes && setTotalTransactions(data.getTotalTransacoes)
+    data.getFuturasTransacoes && setFutureTransactions(data.getFuturasTransacoes)
+    data.getTransacoesFinalizadas && setCompletedTransactions(data.getTransacoesFinalizadas)
   }, [data])
 
   const fetchDatas = () => {
     if (!fetchMore) return
     fetchMore({ variables: { filters } })
-  }
-
-  const ChangeTransactions = (transacoes: Transacao[]) => {
-    const TransacoesFuturas = transacoes
-      .filter((transacao: Transacao) => {
-        const transacaoDate = new Date(transacao.date)
-        const today = new Date()
-
-        return transacaoDate > today
-      })
-
-    const TransacoesCompletadas = transacoes
-      .filter((transacao: Transacao) => !TransacoesFuturas.includes(transacao) && transacao)
-
-    setTotalTransactions(transacoes)
-    TransacoesFuturas.length > 0 ? setFutureTransactions(TransacoesFuturas) : setFutureTransactions([])
-    TransacoesCompletadas.length > 0 ? setCompletedTransactions(TransacoesCompletadas) : setCompletedTransactions([])
   }
 
   const onChangeSelect = (item: string) => {
@@ -117,11 +120,13 @@ const Home: React.FC = () => {
 
       delete FiltersObject.isNegative
 
+      setUserSaldoNegative(undefined)
       return setFilters(FiltersObject)
     }
 
     const selectedItem = item === 'Retiradas'
     setFilters({ ...filters, isNegative: selectedItem })
+    setUserSaldoNegative(selectedItem)
   }
 
   const onChangeCalendar = (selectedDate: Date) => {
