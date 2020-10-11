@@ -19,14 +19,17 @@ class CategoriasController {
     try {
       const userId = context.auth.toString()
       const { page } = args
+
       const pageDatas: IpageDatas = {} as IpageDatas
 
-      const skip = (page || 1 - 1) * 10
+      console.log(page)
+
+      const skip = (page - 1) * 10
 
       const categorias = await Categorias.find({ $or: [{ users: userId }, { global: true }] })
         .limit(10).skip(skip).sort({ name: 1 })
 
-      pageDatas.pageTotal = await Categorias.count({ $or: [{ users: userId }, { global: true }] })
+      pageDatas.pageTotal = (await Categorias.countDocuments({ $or: [{ users: userId }, { global: true }] }) / 10)
       pageDatas.pageAtual = page
 
       categorias.forEach(dataItem => {

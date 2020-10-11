@@ -6,10 +6,12 @@ import sessionController from '@controllers/sessionController'
 
 export default {
   Query: {
-    user: usersController.query,
-    categorias: categoriasController.index,
-    transacoes: transacoesController.index,
-    transacao: transacoesController.show
+    getUser: usersController.query,
+    getCategorias: categoriasController.index,
+    getTotalTransacoes: transacoesController.indexTotal,
+    getFuturasTransacoes: transacoesController.indexFutures,
+    getTransacoesFinalizadas: transacoesController.indexCompleteds,
+    getTransacao: transacoesController.show
   },
 
   Mutation: {

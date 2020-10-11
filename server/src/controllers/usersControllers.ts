@@ -9,31 +9,36 @@ interface IArgsFilters {
 class UsersControllers {
   async query (_: any, args: IArgsFilters, context: MyContext) {
     try {
-      const user = context.auth()
+      const user = context.auth
       const { isNegative } = args
 
       const userDatas = await Users.findById(user)
 
       if (isNegative !== undefined && userDatas?.saldo) {
-        const transacoes = await Transacoes.find(user).select('valor -_id')
+        const transacoes = await Transacoes.find({ user } as any)
 
         const valorFiltered = transacoes?.map(transacao => {
-          const valor = Number(transacao.valor)
+          const valor = Number(transacao.valor.replace(/\D/g, ''))
+
           let returnValue = 0
-          if (isNegative && valor < 0) {
+          if (isNegative && transacao.isNegative) {
             returnValue = valor
           }
 
-          if (!isNegative && valor > 0) {
+          if (!isNegative && !transacao.isNegative) {
             returnValue = valor
           }
 
           return returnValue
         })
 
+        console.log(valorFiltered)
+
         const newSaldo = valorFiltered.reduce((acumulator, currentValue) => {
           return acumulator + currentValue
         })
+
+        console.log(newSaldo)
 
         userDatas.saldo = newSaldo
       }

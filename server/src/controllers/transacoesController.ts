@@ -1,17 +1,18 @@
 import Transacoes from '@models/Transacoes'
 import Users from '@models/Users'
 import { MyContext } from 'src/server'
-import formatDate from 'src/util/formattedDate'
-import { IpageDatas } from './categoriasController'
+import { getTotalTransactions, getFutureTransactions, getPastTransactions } from '../util/getTransacoes'
+
+export interface Transacao {
+  valor: String,
+  title: String,
+  isNegative: Boolean,
+  date: Date,
+  categoria: String,
+}
 
 interface CreateTransacao {
-  transacao: {
-    valor: String,
-    title: String,
-    isNegative: Boolean,
-    date: Date,
-    categoria: String,
-  }
+  transacao: Transacao
 }
 
 interface GetTransacao {
@@ -22,7 +23,6 @@ interface GetTransacoesFilters {
     Filters: {
       isNegative?: Boolean,
       date?: String,
-      future?: Boolean,
       user: String
       page: number
       sort: string
@@ -42,39 +42,45 @@ class TransacoesController {
   async show (_: any, args: GetTransacao) {
     const transacao = await Transacoes.findOne({ _id: args.TransacaoId })
 
+    // if (date) {
+    //   transacoes = transacoes.filter(transacao => {
+    //     const dateFiltered = formatDate(new Date(date.toString()))
+
+    //     return transacao.date.getTime() === dateFiltered.getTime() && transacao
+    //   })
+    // }
+
     return transacao
   }
 
-  async index (_: any, args: GetTransacoesFilters, context: MyContext) {
+  async indexTotal (_: any, args: GetTransacoesFilters, context: MyContext) {
     const userId = context.auth
-    const { future, date, page, sort, ...rest } = args.Filters
+    const { date, page, sort, ...rest } = args.Filters
     rest.user = userId.toString()
-    const pageDatas: IpageDatas = {} as IpageDatas
 
-    const skip = (page || 1 - 1) * 10
+    const data = await getTotalTransactions(args.Filters)
 
-    const sortBy = sort || 'date'
+    return data
+  }
 
-    let transacoes = await Transacoes.find(rest as any)
-      .populate(['categoria', 'user']).limit(10).skip(skip).sort({ [sortBy]: -1 })
+  async indexCompleteds (_: any, args: GetTransacoesFilters, context: MyContext) {
+    const userId = context.auth
+    const { page, sort, ...rest } = args.Filters
+    rest.user = userId.toString()
 
-    transacoes.forEach(transacao => {
-      transacao.date = formatDate(transacao.date)
-      transacao.categoria.icon = `https://docs.google.com/uc?id=${transacao.categoria.icon}`
-    })
+    const data = await getPastTransactions(args.Filters)
 
-    if (date) {
-      transacoes = transacoes.filter(transacao => {
-        const dateFiltered = formatDate(new Date(date.toString()))
+    return data
+  }
 
-        return transacao.date.getTime() === dateFiltered.getTime() && transacao
-      })
-    }
+  async indexFutures (_: any, args: GetTransacoesFilters, context: MyContext) {
+    const userId = context.auth
+    const { page, sort, ...rest } = args.Filters
+    rest.user = userId.toString()
 
-    pageDatas.pageTotal = await Transacoes.count(rest as any)
-    pageDatas.pageAtual = page
+    const data = await getFutureTransactions(args.Filters)
 
-    return { transacoes, pageDatas }
+    return data
   }
 
   async create (_: any, args: CreateTransacao, context: MyContext) {

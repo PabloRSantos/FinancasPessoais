@@ -25,7 +25,6 @@ type Transacao {
 input Filters {
   isNegative: Boolean,
   date: Date,
-  future: Boolean,
   page: Int,
   sortBy: String
 }
@@ -54,7 +53,7 @@ type Categoria {
 
 type pageDatas {
     pageAtual: Int,
-    pageTotal: Int
+    pageTotal: Float
 }
 
 type getTransacoes {
@@ -72,10 +71,12 @@ type Token {
 }
 
 type Query {
-    user: User,
-    categorias: getCategorias,
-    transacoes(Filters: Filters): getTransacoes,
-    transacao(TransacaoId: String): Transacao
+    getUser(isNegative: Boolean): User,
+    getCategorias(page: Int): getCategorias,
+    getTotalTransacoes(Filters: Filters): getTransacoes,
+    getFuturasTransacoes(Filters: Filters): getTransacoes,
+    getTransacoesFinalizadas(Filters: Filters): getTransacoes,
+    getTransacao(TransacaoId: String): Transacao
 }
 
 type Mutation {
