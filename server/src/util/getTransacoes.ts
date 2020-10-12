@@ -4,14 +4,14 @@ import formatDate from './formattedDate'
 
 interface IArgs {
   isNegative?: Boolean,
-  date?: String,
+  date?: Date,
   user: string
   page: number
   sort: string
 }
 
 export const getTotalTransactions = async (args: IArgs) => {
-  const { page, sort, date, ...rest } = args
+  const { page, sort, ...rest } = args
   const pageDatas: IpageDatas = {} as IpageDatas
 
   const skip = (page - 1) * 10
@@ -24,6 +24,15 @@ export const getTotalTransactions = async (args: IArgs) => {
     transacao.date = formatDate(transacao.date as Date)
     transacao.categoria.icon = `https://docs.google.com/uc?id=${transacao.categoria.icon}`
   })
+
+  // if (date) {
+  //   transacoes = transacoes.filter(transacao => {
+  //     const dateFiltered = formatDate(new Date(date.toString()))
+
+  //     return transacao.date.getTime() === dateFiltered.getTime()
+  //   })
+
+  // }
 
   pageDatas.pageTotal = (await Transacoes.countDocuments(rest as any) / 10)
   pageDatas.pageAtual = page

@@ -24,7 +24,6 @@ type Transacao {
 
 input Filters {
   isNegative: Boolean,
-  date: Date,
   page: Int,
   sortBy: String
 }
@@ -61,18 +60,13 @@ type getTransacoes {
   pageDatas: pageDatas
 }
 
-type getCategorias {
-  categorias: [Categoria]
-  pageDatas: pageDatas
-}
-
 type Token {
   token: String
 }
 
 type Query {
     getUser(isNegative: Boolean): User,
-    getCategorias(page: Int): getCategorias,
+    getCategorias: [Categoria],
     getTotalTransacoes(Filters: Filters): getTransacoes,
     getFuturasTransacoes(Filters: Filters): getTransacoes,
     getTransacoesFinalizadas(Filters: Filters): getTransacoes,

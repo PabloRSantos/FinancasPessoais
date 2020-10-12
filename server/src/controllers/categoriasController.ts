@@ -5,32 +5,18 @@ interface IargsCreate {
   name: String
 }
 
-interface IargsIndex {
-  page: number
-}
-
 export interface IpageDatas {
   pageAtual: number,
   pageTotal: number
 }
 
 class CategoriasController {
-  async index (_: any, args: IargsIndex, context: MyContext) {
+  async index (_: any, args: any, context: MyContext) {
     try {
       const userId = context.auth.toString()
-      const { page } = args
-
-      const pageDatas: IpageDatas = {} as IpageDatas
-
-      console.log(page)
-
-      const skip = (page - 1) * 10
 
       const categorias = await Categorias.find({ $or: [{ users: userId }, { global: true }] })
-        .limit(10).skip(skip).sort({ name: 1 })
-
-      pageDatas.pageTotal = (await Categorias.countDocuments({ $or: [{ users: userId }, { global: true }] }) / 10)
-      pageDatas.pageAtual = page
+        .sort({ name: 1 })
 
       categorias.forEach(dataItem => {
         const iconUri = `https://docs.google.com/uc?id=${dataItem.icon}`
@@ -38,7 +24,7 @@ class CategoriasController {
         dataItem.icon = iconUri
       })
 
-      return { categorias, pageDatas }
+      return categorias
     } catch (error) {
       console.log(error)
       return error

@@ -32,13 +32,9 @@ class UsersControllers {
           return returnValue
         })
 
-        console.log(valorFiltered)
-
         const newSaldo = valorFiltered.reduce((acumulator, currentValue) => {
           return acumulator + currentValue
         })
-
-        console.log(newSaldo)
 
         userDatas.saldo = newSaldo
       }

@@ -22,8 +22,8 @@ interface GetTransacao {
 interface GetTransacoesFilters {
     Filters: {
       isNegative?: Boolean,
-      date?: String,
-      user: String
+      date?: Date,
+      user: string
       page: number
       sort: string
     }
@@ -58,7 +58,7 @@ class TransacoesController {
     const { date, page, sort, ...rest } = args.Filters
     rest.user = userId.toString()
 
-    const data = await getTotalTransactions(args.Filters)
+    const data = await getTotalTransactions({ ...rest, page, sort })
 
     return data
   }
@@ -68,7 +68,7 @@ class TransacoesController {
     const { page, sort, ...rest } = args.Filters
     rest.user = userId.toString()
 
-    const data = await getPastTransactions(args.Filters)
+    const data = await getPastTransactions({ ...rest, page, sort })
 
     return data
   }
@@ -78,7 +78,7 @@ class TransacoesController {
     const { page, sort, ...rest } = args.Filters
     rest.user = userId.toString()
 
-    const data = await getFutureTransactions(args.Filters)
+    const data = await getFutureTransactions({ ...rest, sort, page })
 
     return data
   }
@@ -154,8 +154,6 @@ class TransacoesController {
       let deletedTransactionValue = Number(DeletedTransaction.valor.replace(/\D/g, ''))
 
       if (DeletedTransaction.isNegative) deletedTransactionValue = -deletedTransactionValue
-
-      console.log(deletedTransactionValue)
 
       const NovoSaldo = User.saldo - deletedTransactionValue
 

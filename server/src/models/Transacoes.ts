@@ -9,7 +9,7 @@ interface ITransacao extends Document {
   valor: String,
   title: String,
   categoria: ICategoria,
-  date: Date | String
+  date: Date
   isNegative: Boolean
 }
 
