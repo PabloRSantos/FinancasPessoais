@@ -15,7 +15,6 @@ export const TopBar = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
 `
 
 export const Filter = styled(BorderlessButton)`
@@ -40,6 +39,8 @@ export const SelectContainer = styled.View`
     justify-content: center;
 
     position: relative;
+
+    margin-left: 20px;
 `
 
 export const Select = styled(Picker)`

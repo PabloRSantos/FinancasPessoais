@@ -11,8 +11,6 @@ import {
   Select,
   SelectedItem,
   ArrowBottom,
-  CalendarFilter,
-  CalendarFilterIcon,
   ValueContent,
   Label,
   Value
@@ -22,7 +20,6 @@ import { User } from '../../pages/Home'
 import ShimmerHeader from '../ShimmerEffects/Header'
 
 interface HeaderComponentProps {
-  onPressCalendar: () => void
   onPressFilter: () => void
   onChangeSelect: (item: string) => void
   user: User
@@ -31,7 +28,6 @@ interface HeaderComponentProps {
 }
 
 const HeaderComponent: React.FC<HeaderComponentProps> = ({
-  onPressCalendar,
   onPressFilter,
   user,
   onChangeSelect,
@@ -78,9 +74,7 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
   return (
     <Container>
       <TopBar>
-        <Filter onPress={onPressFilter}>
-          <FilterIcon />
-        </Filter>
+        <Filter />
 
         <SelectContainer>
           <SelectedItem>{selectedState}</SelectedItem>
@@ -95,9 +89,9 @@ const HeaderComponent: React.FC<HeaderComponentProps> = ({
           </Select>
         </SelectContainer>
 
-        <CalendarFilter onPress={onPressCalendar}>
-          <CalendarFilterIcon />
-        </CalendarFilter>
+        <Filter onPress={onPressFilter}>
+          <FilterIcon />
+        </Filter>
       </TopBar>
 
       <ValueContent>

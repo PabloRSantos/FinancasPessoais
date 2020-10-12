@@ -10,11 +10,11 @@ import TransacoesComponent from '../../components/Transacoes'
 import GraficosComponent from '../../components/Grafico'
 
 import { Container } from './styles'
-import CalendarComponent from '../../components/Calendar'
 
 import queries from './queries'
 import { useQuery } from '@apollo/client'
 import { useFocusEffect } from '@react-navigation/native'
+import NoDatas from '../../components/NoDatas'
 
 interface Item {
   key: string;
@@ -47,11 +47,6 @@ export interface Categoria {
   name: string
 }
 
-export interface GetCategoria {
-  categorias: Categoria[]
-  pageDatas: PageDatas
- }
-
 export interface User {
   _id: string,
   name: string,
@@ -60,31 +55,27 @@ export interface User {
   saldo: number
 }
 
-interface Filters {
+export interface Filters {
   page: number,
   isNegative?: boolean,
-  date?: Date,
-  future?: boolean
+  sortBy?: string
 }
 
 const Home: React.FC = () => {
   const [showDetailModal, setShowDetailModal] = useState(false)
   const [dataModal, setDataModal] = useState<Transacao>({} as Transacao)
   const [showFilterModal, setShowFilterModal] = useState(false)
-  const [showCalendar, setShowCalendar] = useState(false)
-  const [date, setDate] = useState(new Date())
   const [select, setSelect] = useState('')
   const [completedTransactions, setCompletedTransactions] = useState<GetTransacao>({} as GetTransacao)
   const [futureTransactions, setFutureTransactions] = useState<GetTransacao>({} as GetTransacao)
   const [totalTransactions, setTotalTransactions] = useState<GetTransacao>({} as GetTransacao)
-  const [categorias, setCategorias] = useState<GetCategoria>({} as GetCategoria)
-  const [categoriasPage, setCategoriasPage] = useState(1)
+  const [categorias, setCategorias] = useState<Categoria[]>({} as Categoria[])
   const [userSaldoNegative, setUserSaldoNegative] = useState<Boolean | undefined>()
   const [user, setUser] = useState<User>({} as User)
   const [filters, setFilters] = useState<Filters>({ page: 1 })
 
   const { data, error, loading, fetchMore } = useQuery(queries.query,
-    { variables: { filters, categoriasPage, isNegative: userSaldoNegative } })
+    { variables: { filters, isNegative: userSaldoNegative } })
 
   const { switchTheme } = useTheme()
 
@@ -129,13 +120,6 @@ const Home: React.FC = () => {
     setUserSaldoNegative(selectedItem)
   }
 
-  const onChangeCalendar = (selectedDate: Date) => {
-    if (!selectedDate) return setShowCalendar(false)
-    setFilters({ ...filters, date: selectedDate })
-    setDate(selectedDate)
-    setShowCalendar(false)
-  }
-
   const showDetailTransaction = (item: Transacao) => {
     setDataModal(item)
     setShowDetailModal(true)
@@ -177,13 +161,7 @@ const Home: React.FC = () => {
         user={user}
         selectInitial={select}
         onChangeSelect={item => onChangeSelect(item)}
-        onPressCalendar={() => setShowCalendar(true)}
         onPressFilter={() => setShowFilterModal(true)}/>
-
-      {showCalendar &&
-        <CalendarComponent
-          value={date}
-          onChange={(e, date) => onChangeCalendar(date as Date)}/>}
 
       {showFilterModal &&
         <FilterModal onPress={() => setShowFilterModal(false)}/>
@@ -196,13 +174,18 @@ const Home: React.FC = () => {
           action && fetchDatas()
         }}/>}
 
-      <FlatList
-        onRefresh={fetchDatas}
-        refreshing={false}
-        data={dataItems}
-        renderItem={({ item }) => item.render()}
-        keyExtractor={item => item.key}
-      />
+      {totalTransactions.transacoes || loading ? (
+        <FlatList
+          onRefresh={fetchDatas}
+          refreshing={false}
+          data={dataItems}
+          renderItem={({ item }) => item.render()}
+          keyExtractor={item => item.key}
+        />
+      ) : (
+        <NoDatas />
+      )}
+
     </Container>
   )
 }

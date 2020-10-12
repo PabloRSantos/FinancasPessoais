@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList } from 'react-native'
-import { GetCategoria, GetTransacao } from '../../pages/Home'
+import { Categoria, GetTransacao } from '../../pages/Home'
 import ShimmerGrafico from '../ShimmerEffects/Grafico'
 
 import {
@@ -17,7 +17,7 @@ import {
 
 interface GraficoComponentProps {
   transacoes: GetTransacao
-  categorias: GetCategoria
+  categorias: Categoria[]
   isLoading: boolean
 }
 
@@ -37,7 +37,7 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
   }, [categorias, transacoes])
 
   const formatDatas = () => {
-    const dataItems: Datas[] = categorias.categorias.map(categoria => {
+    const dataItems: Datas[] = categorias.map(categoria => {
       const valores = transacoes.transacoes.map(transacao => {
         if (transacao.categoria._id === categoria._id) {
           const valor = transacao.valor.replace(/\D/g, '')
@@ -87,9 +87,10 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
   }
 
   return (
-    <Container>
-      {datas.length > 0 ? (
-        <>
+    <>
+      {datas.length > 0 && (
+        <Container>
+
           <Categorias>
             <FlatList
               data={datas}
@@ -107,14 +108,10 @@ const GraficoComponent: React.FC<GraficoComponentProps> = ({ categorias, transac
               </Span>
             </SpanButton>
           </RightSide>
-        </>
-      ) : (
-        <Name>
-          Nenhum item encontrado
-        </Name>
-      )}
+        </Container>
 
-    </Container>
+      )}
+    </>
   )
 }
 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { useQuery } from '@apollo/client'
 import { useTransacao } from '../../contexts/transacoes'
-import { useTheme } from '../../contexts/themes'
 
 import ListItemComponent, { Data } from '../../components/ListItem'
 
@@ -12,16 +11,14 @@ import queries from './queries'
 import { Alert } from 'react-native'
 import FooterConfirm from '../../components/FooterConfirm'
 import ShimmerCategorias from '../../components/ShimmerEffects/Categorias'
-import { GetCategoria } from '../Home'
+import { Categoria } from '../Home'
 
 const Categorias: React.FC = () => {
   const [categoriasSelected, setCategoriasSelected] = useState<string[]>([])
   const [footerVisible, setFooterVisible] = useState(false)
-  const [dataCategorias, setDataCategorias] = useState<GetCategoria>({} as GetCategoria)
-  const [page, setPage] = useState(1)
-  const { data, error } = useQuery(queries.getCategorias, { variables: { page } })
+  const [dataCategorias, setDataCategorias] = useState<Categoria[]>({} as Categoria[])
+  const { data, error } = useQuery(queries.getCategorias)
   const { changeState } = useTransacao()
-  const { switchTheme } = useTheme()
   const navigation = useNavigation()
 
   if (error) {
@@ -29,17 +26,9 @@ const Categorias: React.FC = () => {
   }
 
   useEffect(() => {
-    switchTheme('blue')
-  }, [])
-
-  useEffect(() => {
     if (!data) return
 
-    if (!dataCategorias.categorias) {
-      return setDataCategorias(data.getCategorias)
-    }
-    const totalCategorias = dataCategorias.categorias.concat(data.getCategorias.categorias)
-    setDataCategorias({ pageDatas: data.getCategorias.pageDatas, categorias: totalCategorias })
+    return setDataCategorias(data.getCategorias)
   }, [data])
 
   const handleCategoria = (categoriaId: string) => {
@@ -67,12 +56,6 @@ const Categorias: React.FC = () => {
     navigation.navigate('Add')
   }
 
-  const handlePage = () => {
-    const { pageTotal, pageAtual } = dataCategorias.pageDatas
-
-    if (pageAtual < pageTotal) setPage(pageAtual + 1)
-  }
-
   const renderListItem = (item: Data) => (
     <ListItemComponent
       handleItem={id => handleCategoria(id)}
@@ -87,18 +70,16 @@ const Categorias: React.FC = () => {
       <Container>
         <ContentTitle>
           <Title>
-          Escolha um categoria
+          Escolha uma categoria
           </Title>
         </ContentTitle>
 
-        {dataCategorias.categorias ? (
+        {dataCategorias.length > 0 ? (
           <Lista
-            data={dataCategorias.categorias}
+            data={dataCategorias}
             showsVerticalScrollIndicator={false}
             renderItem={({ item, index }) => renderListItem(item as Data)}
             keyExtractor={(item, index) => index.toString()}
-            onEndReached={handlePage}
-            onEndReachedThreshold={0.1}
           />
         ) : (
           <ShimmerCategorias />

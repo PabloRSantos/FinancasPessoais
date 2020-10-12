@@ -69,5 +69,5 @@ export const Icon = styled(FontAwesome).attrs({
 
 export const ButtonContainer = styled.View`
     width: 90%;
-    margin: 0 auto 15px;
+    margin: -5px auto 15px;
 `

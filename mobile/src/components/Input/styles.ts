@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components/native'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
+
 interface InputProps {
     classInput: string
 }
@@ -48,12 +49,11 @@ export const Input = styled.TextInput<InputProps>`
 `
 
 export const Icone = styled(Icon).attrs({
-  size: 20,
-  color: '#109D57'
+  size: 20
 })`
     position: absolute;
     top: 18px;
     left: 12px;
     z-index: 10;
-
+    color: ${props => props.theme.colors.primary};
 `

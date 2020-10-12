@@ -29,9 +29,9 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({
   isLoading,
   showDetailTransaction
 }) => {
-  const [itemsState, setItemsState] = useState(items)
+  const [itemsState, setItemsState] = useState({} as GetTransacao)
   useEffect(() => {
-    if (!items.transacoes) return
+    if (!items.transacoes || items.transacoes.length === 0) return
 
     const itemsFormatted: Transacao[] = items.transacoes.map(item => {
       const dateParts = item.date.toString().split('T').reverse()
@@ -60,12 +60,14 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({
   }
 
   return (
-    <Container>
-      <Title>
-        {title}
-      </Title>
-      {itemsState.transacoes ? (
-        <>
+    <>
+      {itemsState.transacoes && (
+        <Container>
+
+          <Title>
+            {title}
+          </Title>
+
           {itemsState.transacoes.map(item => (
             <Item key={item._id} onPress={() => showDetailTransaction(item)}>
               <LeftSide>
@@ -90,14 +92,10 @@ const TransacoesComponent: React.FC<TransacoesComponentProps> = ({
 
             </Item>
           ))}
-        </>
-      ) : (
-        <Name>
-          Nenhum item encontrado
-        </Name>
-      )}
+        </Container>
 
-    </Container>
+      )}
+    </>
 
   )
 }

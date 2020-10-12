@@ -50,6 +50,7 @@ const Login: React.FC = () => {
           classInput='last'
           nameIcon='lock'
           placeholder='Senha'
+          secureTextEntry={true}
           onChangeText={ text => setPassword(text)}/>
 
         <ForgotPassword onPress={() => navigation.navigate('ForgotPassword')}>

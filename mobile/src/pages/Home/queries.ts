@@ -2,7 +2,7 @@ import { gql } from '@apollo/client'
 
 export default {
   query: gql`
-        query ($filters: Filters, $categoriasPage: Int, $isNegative: Boolean) {
+        query ($filters: Filters, $isNegative: Boolean) {
             getTotalTransacoes (Filters: $filters) {
                 transacoes {
                     valor,
@@ -63,12 +63,10 @@ export default {
                 
             }
 
-            getCategorias (page: $categoriasPage){
-                categorias {
+            getCategorias {
                     _id,
                     name,
                     icon
-                }
             }
 
             getUser (isNegative: $isNegative){

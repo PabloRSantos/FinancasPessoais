@@ -100,15 +100,6 @@ const Profile: React.FC = () => {
 
       </CardContainer>
 
-      <CardContainer>
-        <Title>
-          Cartões
-        </Title>
-        <CardComponent icon='credit-card' placeholder='Cartão'/>
-        <CardComponent icon='credit-card' placeholder='Cartão'/>
-        <CardComponent icon='credit-card' placeholder='Cartão'/>
-      </CardContainer>
-
       <ButtonContainer>
         <ButtonComponent onPress={() => SignOut()} text='Sair' active={true}/>
       </ButtonContainer>

@@ -54,6 +54,7 @@ const Cadastro: React.FC = () => {
           placeholder='Senha'
           nameIcon='lock'
           classInput='middle'
+          secureTextEntry={true}
           value={password}
           onChangeText={text => setPassword(text)}/>
 
