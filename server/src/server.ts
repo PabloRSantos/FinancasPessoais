@@ -31,7 +31,7 @@ try {
     })
   })
 
-  server.listen().then(({ url }) => console.log(`🚀 Server ready at ${url}`))
+  server.listen(process.env.PORT || 3333).then(({ url }) => console.log(`🚀 Server ready at ${url}`))
 } catch (error) {
   console.log(error)
 }
