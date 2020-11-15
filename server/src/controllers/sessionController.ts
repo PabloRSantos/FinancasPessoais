@@ -1,6 +1,6 @@
 import Users from '@models/Users'
 import bcrypt from 'bcrypt'
-import generateToken from 'src/util/generateToken'
+import generateToken from '../util/generateToken'
 
 interface CreateUser {
   user: {
