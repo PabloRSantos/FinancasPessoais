@@ -14,7 +14,7 @@ const authLink = setContext(async (_, { headers }) => {
 })
 
 const httpLink = createHttpLink({
-  uri: 'http://10.0.0.105:4000/graphql'
+  uri: 'https://financas-pessoais-backend.herokuapp.com/graphql'
 })
 
 const client = new ApolloClient({

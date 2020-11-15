@@ -65,11 +65,9 @@ const Profile: React.FC = () => {
           <>
             <CardComponent label='Nome' icon='user' placeholder='Nome' value={userInfos.name}/>
             <CardComponent label='Email' icon='envelope' placeholder='Email' value={userInfos.email}/>
-            <CardComponent label='Senha' icon='lock' placeholder='Senha' value={'*****'}/>
           </>
         ) : (
           <>
-            <ShimmerProfile />
             <ShimmerProfile />
             <ShimmerProfile />
           </>

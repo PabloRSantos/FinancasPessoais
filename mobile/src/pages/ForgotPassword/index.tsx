@@ -14,7 +14,7 @@ const ForgotPassword: React.FC = () => {
             Vamos dar um jeito nisso
         </Span>
         <InputComponent classInput='unique' nameIcon='envelope' placeholder='Email'/>
-        <ButtonComponent active={true} text='Confirmar'/>
+        <ButtonComponent active={true} style={{ backgroundColor: '#109D57' }} text='Confirmar'/>
       </Form>
     </Container>
   )

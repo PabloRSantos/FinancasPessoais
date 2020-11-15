@@ -17,7 +17,7 @@ const CardInfos: React.FC<CardInfosProps> = ({ label, icon, ...rest }) => {
       )}
       <InputContainer>
         <Icon name={icon}/>
-        <Input {...rest}/>
+        <Input {...rest} editable={false}/>
       </InputContainer>
     </Container>
   )

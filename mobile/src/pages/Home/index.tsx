@@ -68,7 +68,7 @@ const Home: React.FC = () => {
   const [select, setSelect] = useState('')
   const [completedTransactions, setCompletedTransactions] = useState<GetTransacao>({} as GetTransacao)
   const [futureTransactions, setFutureTransactions] = useState<GetTransacao>({} as GetTransacao)
-  const [totalTransactions, setTotalTransactions] = useState<GetTransacao>({} as GetTransacao)
+  const [totalTransactions, setTotalTransactions] = useState<GetTransacao>({ transacoes: [], pageDatas: {} as PageDatas } as GetTransacao)
   const [categorias, setCategorias] = useState<Categoria[]>({} as Categoria[])
   const [userSaldoNegative, setUserSaldoNegative] = useState<Boolean | undefined>()
   const [user, setUser] = useState<User>({} as User)
@@ -174,7 +174,7 @@ const Home: React.FC = () => {
           action && fetchDatas()
         }}/>}
 
-      {totalTransactions.transacoes || loading ? (
+      { loading || totalTransactions.transacoes.length !== 0 ? (
         <FlatList
           onRefresh={fetchDatas}
           refreshing={false}

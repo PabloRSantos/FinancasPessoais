@@ -59,7 +59,7 @@ const Login: React.FC = () => {
           </ForgotPasswordText>
         </ForgotPassword>
 
-        <ButtonComponent active={true} text='Entrar' onPress={SubmitForm}/>
+        <ButtonComponent active={true} style={{ backgroundColor: '#109D57' }} text='Entrar' onPress={SubmitForm}/>
 
       </LoginContainer>
     </Container>

@@ -62,12 +62,14 @@ const Cadastro: React.FC = () => {
           placeholder='Sua senha novamente'
           nameIcon='lock'
           classInput='last'
+          secureTextEntry={true}
           value={passwordAgain}
           onChangeText={text => setPasswordAgain(text)}/>
 
         <ButtonComponent
           text='Cadastrar'
           active={false}
+          style={{ backgroundColor: '#109D57' }}
           onPress={submitForm}/>
       </Form>
 
